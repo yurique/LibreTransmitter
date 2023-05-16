@@ -11,9 +11,35 @@ import Combine
 import CoreNFC
 import LibreTransmitter
 
+public enum PairingError: Error {
+    case noTagInfo
+    case noSensorData
+    case wrongSensorType
+    case decryptionError
+    case noPatchInfo
+    
+    public var errorDescription: String {
+        switch self {
+        case .noTagInfo:
+            return "Could not get tag info"
+        case .noSensorData:
+            return "Could not get sensor data"
+        case .wrongSensorType:
+            return "Wrong sensor type detected"
+        case .decryptionError:
+            return "Could not decrypt sensor contents"
+        case .noPatchInfo:
+            return "Could not get patch info"
+        }
+
+    }
+    
+}
+
 class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairingProtocol {
     private var session: NFCTagReaderSession?
     private var readingsSubject = PassthroughSubject<SensorPairingInfo, Never>()
+    private var errorSubject  = PassthroughSubject<Error, Never>()
 
     private let nfcQueue = DispatchQueue(label: "libre-direct.nfc-queue")
     private let accessQueue = DispatchQueue(label: "libre-direct.nfc-access-queue")
@@ -35,6 +61,16 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
     public var publisher: AnyPublisher<SensorPairingInfo, Never> {
         readingsSubject.eraseToAnyPublisher()
     }
+    
+    public var errorPublisher: AnyPublisher<Error, Never> {
+        errorSubject.eraseToAnyPublisher()
+    }
+    
+    private func sendError(_ error: Error) {
+        DispatchQueue.main.async { [weak self] in
+            self?.errorSubject.send(error)
+        }
+    }
 
     private func sendUpdate(_ info: SensorPairingInfo) {
         DispatchQueue.main.async { [weak self] in
@@ -46,6 +82,10 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
     }
 
     internal func tagReaderSession(_ session: NFCTagReaderSession, didInvalidateWithError error: Error) {
+        if let error = error as? NFCReaderError, error.code != .readerSessionInvalidationErrorUserCanceled {
+            session.invalidate(errorMessage: "Connection failure: \(error.localizedDescription)")
+            self.sendError(error)
+        }
     }
 
     internal func tagReaderSession(_ session: NFCTagReaderSession, didDetect tags: [NFCTag]) {
@@ -67,6 +107,8 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
             tag.getSystemInfo(requestFlags: [.address, .highDataRate]) { result in
                 switch result {
                 case .failure:
+                    session.invalidate(errorMessage: PairingError.noTagInfo.errorDescription)
+                    self.sendError(PairingError.noTagInfo)
                     return
                 case .success:
                     tag.customCommand(requestFlags: .highDataRate, customCommandCode: 0xA1, customRequestParameters: Data()) { response, error in
@@ -101,6 +143,7 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
 
                                     // patchInfo should have length 6, which sometimes is not the case, as there are occuring crashes in nfcCommand and Libre2BLEUtilities.streamingUnlockPayload
                                     guard patchInfo.count >= 6 else {
+                                        session.invalidate(errorMessage: PairingError.noPatchInfo.errorDescription)
                                         return
                                     }
 
@@ -114,7 +157,7 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
                                             streamingEnabled = true
                                         }
 
-                                        session.invalidate()
+                                        
 
                                         let patchHex = patchInfo.hexEncodedString()
                                         let sensorType = SensorType(patchInfo: patchInfo)
@@ -123,23 +166,36 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
 
                                         guard sensorUID.count == 8 && patchInfo.count == 6 && fram.count == 344 else {
                                             // self.readingsSubject.send(completion: .failure(LibreError.noSensorData))
+                                            session.invalidate(errorMessage: PairingError.noSensorData.errorDescription)
+                                            self.sendError(PairingError.noSensorData)
                                             return
                                         }
-
-                                        if sensorType == .libre2 {
-                                            do {
-                                                let decryptedBytes = try Libre2.decryptFRAM(type: sensorType, id: [UInt8](sensorUID), info: patchInfo, data: [UInt8](fram))
-
-                                                self.sendUpdate(SensorPairingInfo(uuid: sensorUID, patchInfo: patchInfo, fram: Data(decryptedBytes), streamingEnabled: streamingEnabled))
-
-                                                return
-                                            } catch {
-                                                print("problem decrypting")
-                                            }
-
-                                            self.sendUpdate(SensorPairingInfo(uuid: sensorUID, patchInfo: patchInfo, fram: fram, streamingEnabled: streamingEnabled))
-
+                                        
+                                        guard sensorType == .libre2  else {
+                                            session.invalidate(errorMessage: PairingError.wrongSensorType.errorDescription)
+                                            self.sendError(PairingError.noSensorData)
+                                            return
                                         }
+                                        
+                                        
+
+                                        do {
+                                            let decryptedBytes = try Libre2.decryptFRAM(type: sensorType, id: [UInt8](sensorUID), info: patchInfo, data: [UInt8](fram))
+
+                                            self.sendUpdate(SensorPairingInfo(uuid: sensorUID, patchInfo: patchInfo, fram: Data(decryptedBytes), streamingEnabled: streamingEnabled))
+                                            session.invalidate()
+                                            
+
+                                            return
+                                        } catch {
+                                            print("problem decrypting")
+                                            session.invalidate(errorMessage: PairingError.decryptionError.errorDescription)
+                                            self.sendError(PairingError.decryptionError)
+                                            
+                                        }
+
+
+                                        
                                     }
 
                                 }

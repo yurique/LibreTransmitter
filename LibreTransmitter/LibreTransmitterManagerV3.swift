@@ -237,6 +237,7 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
 
         proxy = LibreTransmitterProxyManager()
         proxy?.delegate = self
+        
     }
 
     deinit {
@@ -275,6 +276,18 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
     var lastDirectUpdate: Date?
 
     internal var countTimesWithoutData: Int = 0
+    
+    func issueTestAlert() {
+        logger.debug("ussuing test alert")
+        delegate.notify { delegate in
+            
+            let foreground = Alert.Content(title: "test", body: "test2", acknowledgeActionButtonLabel: "ok")
+            let background = Alert.Content(title: "backgrounttest", body: "backgroundtest2", acknowledgeActionButtonLabel: "ok")
+            let identifier = Alert.Identifier(managerIdentifier: "foo", alertIdentifier: "bar")
+            var alert = Alert(identifier: identifier, foregroundContent: foreground, backgroundContent: background, trigger: Alert.Trigger.immediate)
+            delegate?.issueAlert(alert)
+        }
+    }
 
 }
 

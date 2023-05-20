@@ -237,6 +237,7 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
 
         proxy = LibreTransmitterProxyManager()
         proxy?.delegate = self
+        
     }
 
     deinit {
@@ -275,6 +276,7 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
     var lastDirectUpdate: Date?
 
     internal var countTimesWithoutData: Int = 0
+    
 
 }
 

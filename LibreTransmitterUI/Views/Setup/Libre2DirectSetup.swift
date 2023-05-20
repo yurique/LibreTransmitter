@@ -59,7 +59,7 @@ struct Libre2DirectSetup: View {
         service.pairSensor()
 
     }
-
+    
     func receivePairingInfo(_ info: SensorPairingInfo) {
 
         print("Received Pairinginfo: \(String(describing: info))")
@@ -109,38 +109,6 @@ struct Libre2DirectSetup: View {
         }// .accentColor(.red)
     }
     
-    var pairingInfoSection: some View {
-        Section(header: Text("Pairinginfo")) {
-            if showPairingInfo {
-
-                SettingsItem(title: "UUID", detail: Binding<String>(get: {
-                    pairingInfo.uuid.hex
-                }, set: { _ in
-                    // not used
-                }))
-
-                SettingsItem(title: "PatchInfo", detail: Binding<String>(get: {
-                    pairingInfo.patchInfo.hex
-                }, set: { _ in
-                    // not used
-                }))
-
-                SettingsItem(title: "Calibrationinfo", detail: Binding<String>(get: {
-                    if let c = pairingInfo.calibrationData {
-                        return"\(c.i1),\(c.i2), \(c.i3), \(c.i4), \(c.i5), \(c.i6)"
-
-                    }
-                    return "Unknown"
-                }, set: { _ in
-                    // not used
-                }))
-
-            } else {
-                Text("Not paired yet")
-            }
-
-        }
-    }
     
     var body : some View {
         GuidePage(content: {
@@ -169,6 +137,7 @@ struct Libre2DirectSetup: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: cancelButton)  // the pair button does the save process for us! //, trailing: saveButton)
         .onReceive(service.publisher, perform: receivePairingInfo)
+        //.onReceive(service.errorPublisher, perform: receiveError)
         .alert(item: $presentableStatus) { status in
             Alert(title: Text(status.title), message: Text(status.message), dismissButton: .default(Text("Got it!")))
         

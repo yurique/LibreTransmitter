@@ -29,8 +29,7 @@ struct Libre2DirectSetup: View {
     @ObservedObject public var saveNotifier: GenericObservableObject
     
     public var isMockedSensor = false
-    
-    
+
     func pairMockedSensor() {
         let info = FakeSensorPairingData().fakeSensorPairingInfo()
         logger.debug("Sending fake sensor pairinginfo: \(info.description)")
@@ -38,8 +37,6 @@ struct Libre2DirectSetup: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             receivePairingInfo(info)
         }
-        
-        
     }
 
     func pairSensor() {
@@ -95,7 +92,7 @@ struct Libre2DirectSetup: View {
         // only relevant for launch through settings, as selectionstate can be persisted
         // we need to enforce libre2 by removing any selected third party transmitter
         SelectionState.shared.selectedStringIdentifier = nil
-        print(" paried and set selected UID to: \(SelectionState.shared.selectedUID?.hex)")
+        print("Paired and set selected UID to: \(String(describing: SelectionState.shared.selectedUID?.hex))")
         saveNotifier.notify()
         NotificationHelper.sendLibre2FirectFinishedSetupNotifcation()
 
@@ -137,7 +134,6 @@ struct Libre2DirectSetup: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: cancelButton)  // the pair button does the save process for us! //, trailing: saveButton)
         .onReceive(service.publisher, perform: receivePairingInfo)
-        //.onReceive(service.errorPublisher, perform: receiveError)
         .alert(item: $presentableStatus) { status in
             Alert(title: Text(status.title), message: Text(status.message), dismissButton: .default(Text("Got it!")))
         

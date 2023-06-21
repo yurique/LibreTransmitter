@@ -81,5 +81,5 @@ class SensorPairingInfo: ObservableObject, Codable {
 }
 
 protocol SensorPairingProtocol {
-    func pairSensor() -> AnyPublisher<SensorPairingInfo, Never>
+    func pairSensor()
 }

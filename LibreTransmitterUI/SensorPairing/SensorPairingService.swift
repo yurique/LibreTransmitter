@@ -46,7 +46,7 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
 
     private let unlockCode: UInt32 = 42 // 42
 
-    @discardableResult func pairSensor() -> AnyPublisher<SensorPairingInfo, Never> {
+    func pairSensor(){
         if NFCTagReaderSession.readingAvailable {
             accessQueue.async {
                 self.session = NFCTagReaderSession(pollingOption: .iso15693, delegate: self, queue: self.nfcQueue)
@@ -54,8 +54,6 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
                 self.session?.begin()
             }
         }
-
-        return readingsSubject.eraseToAnyPublisher()
     }
 
     public var publisher: AnyPublisher<SensorPairingInfo, Never> {

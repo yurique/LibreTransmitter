@@ -109,9 +109,9 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
             "## LibreTransmitterManager",
             "Testdata: foo",
             "lastConnected: \(String(describing: lastConnected))",
-            "Connection state: \(self.proxy?.connectionStateString)",
-            "Sensor state: \(proxy?.sensorData?.state.description)",
-            "transmitterbattery: \(proxy?.metadata?.batteryString)",
+            "Connection state: \(String(describing: self.proxy?.connectionStateString))",
+            "Sensor state: \(String(describing: proxy?.sensorData?.state.description))",
+            "transmitterbattery: \(String(describing: proxy?.metadata?.batteryString))",
             "SensorData: \(getPersistedSensorDataForDebug())",
             "providesBLEHeartbeat: \(providesBLEHeartbeat)",
             "Metainfo::\n\(AppMetaData.allProperties)",
@@ -293,11 +293,11 @@ extension LibreTransmitterManagerV3 {
         if let predicted = allGlucoses.predictBloodSugar(glucosePredictionMinutes) {
             let currentBg = predicted.calibratedGlucose(calibrationInfo: calibration)
             let bgDate = predicted.date.addingTimeInterval(60 * -glucosePredictionMinutes)
-            return LibreGlucose(unsmoothedGlucose: currentBg, glucoseDouble: currentBg, timestamp: bgDate)
             logger.debug("Predicted glucose (not used) was: \(currentBg)")
+            return LibreGlucose(unsmoothedGlucose: currentBg, glucoseDouble: currentBg, timestamp: bgDate)
         } else {
-            return nil
             logger.debug("Tried to predict glucose value but failed!")
+            return nil
         }
 
     }

@@ -147,9 +147,6 @@ class GlucoseSchedule: Codable, CustomStringConvertible {
     var highAlarm: Double?
     var enabled: Bool?
 
-    init() {
-    }
-
     // glucose schedules are stored as standalone datecomponents (i.e. offsets)
     // this takes the current start of day and adds those offsets,
     // and returns a Dateinterval with those offsets applied

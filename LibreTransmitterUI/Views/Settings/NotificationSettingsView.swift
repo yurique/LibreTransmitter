@@ -64,10 +64,6 @@ struct NotificationSettingsView: View {
 
     static let formatter = NumberFormatter()
 
-    init() {
-        
-    }
-
     var glucoseVisibilitySection : some View {
         Section(header: Text(LocalizedString("Glucose Notification visibility", comment: "Text describing header for notification visibility in notificationsettingsview")) ) {
             Toggle(LocalizedString("Always Notify Glucose", comment: "Text describing always notify glucose option in notificationsettingsview"), isOn: $mmAlwaysDisplayGlucose)

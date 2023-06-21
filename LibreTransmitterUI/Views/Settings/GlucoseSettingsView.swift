@@ -15,18 +15,6 @@ struct GlucoseSettingsView: View {
 
     @State private var presentableStatus: StatusMessage?
 
-    private var glucoseUnit: HKUnit
-
-    public init(glucoseUnit: HKUnit) {
-        if let savedGlucoseUnit = UserDefaults.standard.mmGlucoseUnit {
-            self.glucoseUnit = savedGlucoseUnit
-        } else {
-            self.glucoseUnit = glucoseUnit
-            UserDefaults.standard.mmGlucoseUnit = glucoseUnit
-        }
-
-    }
-
     @AppStorage("com.loopkit.libreSyncToNs") var mmSyncToNS: Bool = true
     @AppStorage("com.loopkit.libreBackfillFromHistory") var mmBackfillFromHistory: Bool = true
     @AppStorage("com.loopkit.libreshouldPersistSensorData") var shouldPersistSensorData: Bool = false
@@ -78,6 +66,6 @@ struct GlucoseSettingsView: View {
 
 struct GlucoseSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        GlucoseSettingsView(glucoseUnit: HKUnit.millimolesPerLiter)
+        GlucoseSettingsView()
     }
 }

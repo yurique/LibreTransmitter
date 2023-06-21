@@ -197,10 +197,6 @@ struct BluetoothSelection: View {
 
     private var searcher: BluetoothSearchManager!
 
-    /*static func asHostedViewController() -> UIHostingController<Self> {
-        UIHostingController(rootView: self.init())
-    }*/
-
     // Should contain all discovered and compatible devices
     // This list is expected to contain 10 or 20 items at the most
     @State var allDevices = [SomePeripheral]()

@@ -21,17 +21,16 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
 
     lazy var cgmManager: LibreTransmitterManagerV3? =  LibreTransmitterManagerV3()
 
-    var modeSelection: UIHostingController<ModeSelectionView>!
-
-    init() {
+    init(displayGlucosePreference: DisplayGlucosePreference) {
         SelectionState.shared.selectedStringIdentifier = UserDefaults.standard.preSelectedDevice
 
         let cancelNotifier = GenericObservableObject()
         let saveNotifier = GenericObservableObject()
 
-        modeSelection = UIHostingController(rootView: ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier))
+        let myView = ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier)
+            .environmentObject(displayGlucosePreference)
 
-        super.init(rootViewController: modeSelection)
+        super.init(rootViewController: UIHostingController(rootView: myView))
 
         cancelNotifier.listenOnce { [weak self] in
             self?.cancel()

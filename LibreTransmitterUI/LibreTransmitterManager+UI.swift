@@ -24,12 +24,12 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
         nil
     }
 
-    public static func setupViewController(bluetoothProvider: BluetoothProvider, displayGlucoseUnitObservable: DisplayGlucoseUnitObservable, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool) -> SetupUIResult<CGMManagerViewController, CGMManagerUI> {
+    public static func setupViewController(bluetoothProvider: BluetoothProvider, displayGlucosePreference: DisplayGlucosePreference, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool, prefersToSkipUserInteraction: Bool) -> SetupUIResult<CGMManagerViewController, CGMManagerUI> {
 
-            return .userInteractionRequired(LibreTransmitterSetupViewController())
+            return .userInteractionRequired(LibreTransmitterSetupViewController(displayGlucosePreference: displayGlucosePreference))
     }
 
-    public func settingsViewController(bluetoothProvider: BluetoothProvider, displayGlucoseUnitObservable: DisplayGlucoseUnitObservable, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool) -> CGMManagerViewController {
+    public func settingsViewController(bluetoothProvider: BluetoothProvider, displayGlucosePreference: DisplayGlucosePreference, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool) -> CGMManagerViewController {
 
         let doneNotifier = GenericObservableObject()
         let wantToTerminateNotifier = GenericObservableObject()
@@ -39,7 +39,7 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
         let wantToRestablishConnectionNotifier = GenericObservableObject()
 
         let settings = SettingsView.asHostedViewController(
-            displayGlucoseUnitObservable: displayGlucoseUnitObservable,
+            displayGlucosePreference: displayGlucosePreference,
             notifyComplete: doneNotifier, notifyDelete: wantToTerminateNotifier,
             notifyReset: wantToResetCGMManagerNotifier, notifyReconnect:wantToRestablishConnectionNotifier,
             transmitterInfoObservable: self.transmitterInfoObservable,

@@ -21,7 +21,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2023 LoopKit Authors</string>
 	<key>NSPrincipalClass</key>
-	<string>LibreDemoPlugin</string>
+	<string>LibreDemoPlugin.LibreDemoPlugin</string>
 	<key>com.loopkit.Loop.CGMManagerDisplayName</key>
 	<string>Libre Demo CGM</string>
 	<key>com.loopkit.Loop.CGMManagerIdentifier</key>

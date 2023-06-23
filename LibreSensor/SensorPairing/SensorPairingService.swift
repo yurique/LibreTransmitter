@@ -17,26 +17,38 @@ public enum PairingError: Error {
     case wrongSensorType
     case decryptionError
     case noPatchInfo
-    
-    public var errorDescription: String {
-        switch self {
-        case .noTagInfo:
-            return "Could not get tag info"
-        case .noSensorData:
-            return "Could not get sensor data"
-        case .wrongSensorType:
-            return "Wrong sensor type detected"
-        case .decryptionError:
-            return "Could not decrypt sensor contents"
-        case .noPatchInfo:
-            return "Could not get patch info"
-        }
-
-    }
-    
+    case nfcNotSupported
 }
 
-class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairingProtocol {
+extension PairingError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .noTagInfo:
+            return LocalizedString("Could not get tag info", comment: "error description for PairingError.noTagInfo")
+        case .noSensorData:
+            return LocalizedString("Could not get sensor data", comment: "error description for PairingError.noSensorData")
+        case .wrongSensorType:
+            return LocalizedString("Wrong sensor type detected", comment: "error description for PairingError.wrongSensorType")
+        case .decryptionError:
+            return LocalizedString("Could not decrypt sensor contents", comment: "error description for PairingError.decryptionError")
+        case .noPatchInfo:
+            return LocalizedString("Could not get patch info", comment: "error description for PairingError.noPatchInfo")
+        case .nfcNotSupported:
+            return LocalizedString("Phone NFC not supported!", comment: "error description for PairingError.nfcNotSupported")
+        }
+    }
+
+    public var recoverySuggestion: String? {
+        switch self {
+        case .nfcNotSupported:
+            return LocalizedString("Your phone or app is not enabled for NFC communications, which is needed to pair to libre2 sensors", comment: "Recovery suggestion for PairingError.nfcNotSupported")
+        default:
+            return nil
+        }
+    }
+}
+
+public class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairingProtocol {
     private var session: NFCTagReaderSession?
     private var readingsSubject = PassthroughSubject<SensorPairingInfo, Never>()
     private var errorSubject  = PassthroughSubject<Error, Never>()
@@ -46,7 +58,12 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
 
     private let unlockCode: UInt32 = 42 // 42
 
-    func pairSensor(){
+    public func pairSensor() throws {
+        if !Features.phoneNFCAvailable {
+            throw PairingError.nfcNotSupported
+        }
+        print("Asked to pair sensor! phoneNFCAvailable: \(Features.phoneNFCAvailable)")
+
         if NFCTagReaderSession.readingAvailable {
             accessQueue.async {
                 self.session = NFCTagReaderSession(pollingOption: .iso15693, delegate: self, queue: self.nfcQueue)
@@ -76,17 +93,17 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
         }
     }
 
-    internal func tagReaderSessionDidBecomeActive(_ session: NFCTagReaderSession) {
+    public func tagReaderSessionDidBecomeActive(_ session: NFCTagReaderSession) {
     }
 
-    internal func tagReaderSession(_ session: NFCTagReaderSession, didInvalidateWithError error: Error) {
+    public func tagReaderSession(_ session: NFCTagReaderSession, didInvalidateWithError error: Error) {
         if let error = error as? NFCReaderError, error.code != .readerSessionInvalidationErrorUserCanceled {
             session.invalidate(errorMessage: "Connection failure: \(error.localizedDescription)")
             self.sendError(error)
         }
     }
 
-    internal func tagReaderSession(_ session: NFCTagReaderSession, didDetect tags: [NFCTag]) {
+    public func tagReaderSession(_ session: NFCTagReaderSession, didDetect tags: [NFCTag]) {
         guard let firstTag = tags.first else { return }
         guard case .iso15693(let tag) = firstTag else { return }
 
@@ -105,7 +122,7 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
             tag.getSystemInfo(requestFlags: [.address, .highDataRate]) { result in
                 switch result {
                 case .failure:
-                    session.invalidate(errorMessage: PairingError.noTagInfo.errorDescription)
+                    session.invalidate(errorMessage: PairingError.noTagInfo.localizedDescription)
                     self.sendError(PairingError.noTagInfo)
                     return
                 case .success:
@@ -141,7 +158,7 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
 
                                     // patchInfo should have length 6, which sometimes is not the case, as there are occuring crashes in nfcCommand and Libre2BLEUtilities.streamingUnlockPayload
                                     guard patchInfo.count >= 6 else {
-                                        session.invalidate(errorMessage: PairingError.noPatchInfo.errorDescription)
+                                        session.invalidate(errorMessage: PairingError.noPatchInfo.localizedDescription)
                                         return
                                     }
 
@@ -164,13 +181,13 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
 
                                         guard sensorUID.count == 8 && patchInfo.count == 6 && fram.count == 344 else {
                                             // self.readingsSubject.send(completion: .failure(LibreError.noSensorData))
-                                            session.invalidate(errorMessage: PairingError.noSensorData.errorDescription)
+                                            session.invalidate(errorMessage: PairingError.noSensorData.localizedDescription)
                                             self.sendError(PairingError.noSensorData)
                                             return
                                         }
                                         
                                         guard sensorType == .libre2  else {
-                                            session.invalidate(errorMessage: PairingError.wrongSensorType.errorDescription)
+                                            session.invalidate(errorMessage: PairingError.wrongSensorType.localizedDescription)
                                             self.sendError(PairingError.noSensorData)
                                             return
                                         }
@@ -187,15 +204,10 @@ class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, SensorPairing
                                             return
                                         } catch {
                                             print("problem decrypting")
-                                            session.invalidate(errorMessage: PairingError.decryptionError.errorDescription)
+                                            session.invalidate(errorMessage: PairingError.decryptionError.localizedDescription)
                                             self.sendError(PairingError.decryptionError)
-                                            
                                         }
-
-
-                                        
                                     }
-
                                 }
                             }
                         }

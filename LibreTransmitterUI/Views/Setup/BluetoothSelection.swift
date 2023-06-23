@@ -379,7 +379,7 @@ extension BluetoothSelection {
 
 struct BluetoothSelection_Previews: PreviewProvider {
     static var previews: some View {
-        var testData = SelectionState.shared
+        let testData = SelectionState.shared
         testData.selectedStringIdentifier = "device4"
 
         return BluetoothSelection(debugMode: true, cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject())

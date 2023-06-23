@@ -8,9 +8,18 @@
 
 import Foundation
 import LibreTransmitter
+import LibreTransmitterUI
+import LoopKit
+import LoopKitUI
 
 class LibreDemoCGMManager: LibreTransmitterManagerV3 {
-    public var managerIdentifier = "LibreDemoCGMManager"
+    public override var managerIdentifier: String {
+        "LibreDemoCGMManager"
+    }
 
+
+    public override var service: SensorPairingProtocol {
+        return MockSensorPairingService()
+    }
     
 }

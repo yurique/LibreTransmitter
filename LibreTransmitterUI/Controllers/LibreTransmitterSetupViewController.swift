@@ -19,15 +19,17 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
 
     fileprivate lazy var logger = Logger(forType: Self.self)
 
-    lazy var cgmManager: LibreTransmitterManagerV3? =  LibreTransmitterManagerV3()
+    var cgmManager: LibreTransmitterManagerV3
 
-    init(displayGlucosePreference: DisplayGlucosePreference) {
+    init(displayGlucosePreference: DisplayGlucosePreference, cgmManager: LibreTransmitterManagerV3) {
         SelectionState.shared.selectedStringIdentifier = UserDefaults.standard.preSelectedDevice
+
+        self.cgmManager = cgmManager
 
         let cancelNotifier = GenericObservableObject()
         let saveNotifier = GenericObservableObject()
 
-        let myView = ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier)
+        let myView = ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier, service: cgmManager.service)
             .environmentObject(displayGlucosePreference)
 
         super.init(rootViewController: UIHostingController(rootView: myView))
@@ -40,10 +42,6 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
             self?.save()
         }
 
-    }
-
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
     deinit {
@@ -87,14 +85,9 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
             // stored both preSelectedDevice and selectedUID !
         }
 
-        if let cgmManager {
-            logger.debug("Setupcontroller Saving from setup")
-            cgmManagerOnboardingDelegate?.cgmManagerOnboarding(didCreateCGMManager: cgmManager)
-            cgmManagerOnboardingDelegate?.cgmManagerOnboarding(didOnboardCGMManager: cgmManager)
-
-        } else {
-            logger.debug("Setupcontroller not Saving from setup")
-        }
+        logger.debug("Setupcontroller Saving from setup")
+        cgmManagerOnboardingDelegate?.cgmManagerOnboarding(didCreateCGMManager: cgmManager)
+        cgmManagerOnboardingDelegate?.cgmManagerOnboarding(didOnboardCGMManager: cgmManager)
 
         completionDelegate?.completionNotifyingDidComplete(self)
     }

@@ -15,7 +15,7 @@ import CoreBluetooth
 import HealthKit
 import os.log
 
-public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
+open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 
     public typealias GlucoseArrayWithPrediction = (trends: [LibreGlucose], historical: [LibreGlucose], prediction: [LibreGlucose])
     public lazy var logger = Logger(forType: Self.self)
@@ -185,7 +185,9 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
 
     }
 
-    public var managerIdentifier = "LibreTransmitterManagerV3"
+    open var managerIdentifier: String {
+        "LibreTransmitterManagerV3"
+    }
 
     public required convenience init?(rawState: CGMManager.RawStateValue) {
 
@@ -207,7 +209,7 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
         UserDefaults.standard.mmSyncToNs
     }
 
-    public init() {
+    public required init() {
         lastConnected = nil
 
         logger.debug("LibreTransmitterManager will be created now")
@@ -271,8 +273,10 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
     var lastDirectUpdate: Date?
 
     internal var countTimesWithoutData: Int = 0
-    
 
+    open var service: SensorPairingProtocol {
+        return SensorPairingService()
+    }
 }
 
 // MARK: - Convenience functions
@@ -427,9 +431,7 @@ extension LibreTransmitterManagerV3 {
                 self.glucoseInfoObservable.prediction = nil
                 self.glucoseInfoObservable.predictionDate = nil
             }
-
         }
-
     }
 
     func getStartDateForFilter() -> Date? {

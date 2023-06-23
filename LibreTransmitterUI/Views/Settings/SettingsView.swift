@@ -75,6 +75,8 @@ struct SettingsView: View {
     // @State private var showingExporter = false
     // @Environment(\.presentationMode) var presentationMode
 
+    var service: SensorPairingProtocol
+
     static func asHostedViewController(
         displayGlucosePreference: DisplayGlucosePreference,
         notifyComplete: GenericObservableObject,
@@ -84,7 +86,9 @@ struct SettingsView: View {
         transmitterInfoObservable: LibreTransmitter.TransmitterInfo,
         sensorInfoObervable: LibreTransmitter.SensorInfo,
         glucoseInfoObservable: LibreTransmitter.GlucoseInfo,
-        alarmStatus: LibreTransmitter.AlarmStatus) -> DismissibleHostingController
+        alarmStatus: LibreTransmitter.AlarmStatus,
+        service: SensorPairingProtocol
+    ) -> DismissibleHostingController
     {
         let view = self.init(
             transmitterInfo: transmitterInfoObservable,
@@ -94,7 +98,8 @@ struct SettingsView: View {
             notifyDelete: notifyDelete,
             notifyReset: notifyReset,
             notifyReconnect: notifyReconnect,
-            alarmStatus: alarmStatus
+            alarmStatus: alarmStatus,
+            service: service
         ).environmentObject(displayGlucosePreference)
         return DismissibleHostingController(rootView: view)
     }
@@ -220,7 +225,7 @@ struct SettingsView: View {
     var sensorChangeSection: some View {
         
         Section {
-            NavigationLink(destination: AuthView(completeNotifier: notifyComplete, notifyReset: notifyReset, notifyReconnect: notifyReconnect)) {
+            NavigationLink(destination: AuthView(completeNotifier: notifyComplete, notifyReset: notifyReset, notifyReconnect: notifyReconnect, service: service)) {
                 /*Button("Change Sensor") {
                 }.foregroundColor(.blue)*/
                 SettingsItem(title: "Change Sensor").foregroundColor(.blue)

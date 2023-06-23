@@ -24,9 +24,12 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
         nil
     }
 
-    public static func setupViewController(bluetoothProvider: BluetoothProvider, displayGlucosePreference: DisplayGlucosePreference, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool, prefersToSkipUserInteraction: Bool) -> SetupUIResult<CGMManagerViewController, CGMManagerUI> {
+    public static func setupViewController(bluetoothProvider: BluetoothProvider, displayGlucosePreference: DisplayGlucosePreference, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool, prefersToSkipUserInteraction: Bool) -> SetupUIResult<CGMManagerViewController, CGMManagerUI>
+    {
+        let cgmManager = self.init()
+        let vc = LibreTransmitterSetupViewController(displayGlucosePreference: displayGlucosePreference, cgmManager: cgmManager)
 
-            return .userInteractionRequired(LibreTransmitterSetupViewController(displayGlucosePreference: displayGlucosePreference))
+        return .userInteractionRequired(vc)
     }
 
     public func settingsViewController(bluetoothProvider: BluetoothProvider, displayGlucosePreference: DisplayGlucosePreference, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool) -> CGMManagerViewController {
@@ -45,7 +48,9 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
             transmitterInfoObservable: self.transmitterInfoObservable,
             sensorInfoObervable: self.sensorInfoObservable,
             glucoseInfoObservable: self.glucoseInfoObservable,
-            alarmStatus: self.alarmStatus)
+            alarmStatus: self.alarmStatus,
+            service: self.service
+        )
 
         let nav = CGMManagerSettingsNavigationViewController(rootViewController: settings)
         nav.navigationItem.largeTitleDisplayMode = .always

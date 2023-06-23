@@ -6,22 +6,21 @@
 //
 import Foundation
 import Combine
-import LibreTransmitter
 
 
-class SensorPairingInfo: ObservableObject, Codable {
-    @Published private(set) var uuid: Data
-    @Published private(set) var patchInfo: Data
-    @Published private(set) var fram: Data
-    @Published private(set) var streamingEnabled: Bool
-    @Published private(set) var initialIdentificationStrategy: Libre2IdentificationStrategy = .byUid
+public class SensorPairingInfo: ObservableObject, Codable {
+    @Published public var uuid: Data
+    @Published public var patchInfo: Data
+    @Published public var fram: Data
+    @Published public var streamingEnabled: Bool
+    @Published public var initialIdentificationStrategy: Libre2IdentificationStrategy = .byUid
     
-    @Published private(set) var sensorName : String? = nil
+    @Published public var sensorName : String? = nil
     
     enum CodingKeys: CodingKey {
         case uuid, patchInfo, fram, streamingEnabled, initialIdentificationStrategy, sensorName
     }
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(uuid, forKey: .uuid)
@@ -33,7 +32,7 @@ class SensorPairingInfo: ObservableObject, Codable {
 
        
     }
-    required init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         uuid = try container.decode(Data.self, forKey: .uuid)
@@ -58,15 +57,15 @@ class SensorPairingInfo: ObservableObject, Codable {
         self.sensorName = sensorName
     }
 
-    var sensorData: SensorData? {
+    public var sensorData: SensorData? {
         SensorData(bytes: [UInt8](self.fram))
     }
 
-    var calibrationData: SensorData.CalibrationInfo? {
+    public var calibrationData: SensorData.CalibrationInfo? {
         sensorData?.calibrationData
     }
     
-    var description: String {
+    public var description: String {
         let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted
 
@@ -80,6 +79,9 @@ class SensorPairingInfo: ObservableObject, Codable {
 
 }
 
-protocol SensorPairingProtocol {
-    func pairSensor()
+public protocol SensorPairingProtocol {
+    var publisher: AnyPublisher<SensorPairingInfo, Never> { get }
+
+    func pairSensor() throws
+
 }

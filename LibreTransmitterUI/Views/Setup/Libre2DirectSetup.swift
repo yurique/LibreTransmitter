@@ -21,14 +21,13 @@ struct Libre2DirectSetup: View {
     @State private var presentableStatus: StatusMessage?
     @State private var showPairingInfo = false
 
-    @State private var service = SensorPairingService()
 
     @State private var pairingInfo = SensorPairingInfo()
 
     @ObservedObject public var cancelNotifier: GenericObservableObject
     @ObservedObject public var saveNotifier: GenericObservableObject
     
-    public var isMockedSensor = false
+    var service: SensorPairingProtocol
 
     func pairMockedSensor() {
         let info = FakeSensorPairingData().fakeSensorPairingInfo()
@@ -40,21 +39,15 @@ struct Libre2DirectSetup: View {
     }
 
     func pairSensor() {
-        
-        guard !isMockedSensor else {
-            pairMockedSensor()
-            return
-        }
-        
-        if !Features.phoneNFCAvailable {
-            presentableStatus = StatusMessage(title: "Phone NFC required!", message: "Your phone or app is not enabled for NFC communications, which is needed to pair to libre2 sensors")
-            return
-        }
-        print("Asked to pair sensor! phoneNFCAvailable: \(Features.phoneNFCAvailable)")
+
         showPairingInfo = false
 
-        service.pairSensor()
-
+        do {
+            try service.pairSensor()
+        } catch {
+            let message = (error as? LocalizedError)?.recoverySuggestion ?? error.localizedDescription
+            presentableStatus = StatusMessage(title: error.localizedDescription, message: message)
+        }
     }
     
     func receivePairingInfo(_ info: SensorPairingInfo) {
@@ -143,7 +136,7 @@ struct Libre2DirectSetup: View {
 
 struct Libre2DirectSetup_Previews: PreviewProvider {
     static var previews: some View {
-        Libre2DirectSetup(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject())
+        Libre2DirectSetup(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), service: SensorPairingService())
     }
 }
 #endif

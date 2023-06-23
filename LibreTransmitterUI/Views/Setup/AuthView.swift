@@ -8,6 +8,8 @@
 
 import SwiftUI
 import LoopKitUI
+import LibreTransmitter
+
 // this view should only be called when setting up a new device in an existing cgmmanager
 struct AuthView: View {
     
@@ -21,6 +23,8 @@ struct AuthView: View {
     
     @State private var isAuthenticated = false
     @State private var hasSetupListeners = false
+
+    var service: SensorPairingProtocol
     
     var exclamation: Image {
         Image(systemName: "exclamationmark.triangle.fill")
@@ -37,7 +41,7 @@ struct AuthView: View {
                 Text(LocalizedString("Authenticated", comment: "Text confirming user is authenticated in AuthView"))
                     
                     .transition(AnyTransition.opacity.combined(with: .move(edge: .bottom)))
-                NavigationLink(destination: ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier), isActive: $isNavigationActive) {
+                NavigationLink(destination: ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier, service: service), isActive: $isNavigationActive) {
                     Button(action: {
                         self.notifyReset.notify()
                         self.isNavigationActive = true
@@ -155,6 +159,6 @@ struct AuthView: View {
 
 struct AuthView_Previews: PreviewProvider {
     static var previews: some View {
-        AuthView(completeNotifier: GenericObservableObject(), notifyReset: GenericObservableObject(), notifyReconnect: GenericObservableObject())
+        AuthView(completeNotifier: GenericObservableObject(), notifyReset: GenericObservableObject(), notifyReconnect: GenericObservableObject(), service: SensorPairingService())
     }
 }

@@ -22,6 +22,6 @@ public struct FakeSensorPairingData {
     }
     
     public func fakeSensorPairingInfo() -> SensorPairingInfo{
-        SensorPairingInfo(uuid: Data(de_new_patch_uid), patchInfo: Data(de_new_patch_info), fram: Data(de_new_packet), streamingEnabled: true, initialIdentificationStrategy: .byFakeSensorName, sensorName: sensorName)
+        SensorPairingInfo(uuid: Data(de_new_patch_uid), patchInfo: Data(de_new_patch_info), fram: Data(de_new_packet), streamingEnabled: true, sensorName: sensorName)
     }
 }

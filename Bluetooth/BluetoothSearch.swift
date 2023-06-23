@@ -140,7 +140,7 @@ final class BluetoothSearchManager: NSObject, CBCentralManagerDelegate, CBPeriph
         case .poweredOn:
             // we don't want this to start scanning right away, but rather wait until the view has appeared
             // this means that the view is responsible for calling scanForCompatibleDevices it self
-            // scanForCompatibleDevices() // power was switched on, while app is running -> reconnect.
+            scanForCompatibleDevices() // power was switched on, while app is running -> reconnect.
             break
 
         @unknown default:

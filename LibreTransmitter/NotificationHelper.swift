@@ -146,7 +146,7 @@ public enum NotificationHelper {
 
 // MARK: Sensor related notification sendouts
 public extension NotificationHelper {
-    static func sendLibre2FirectFinishedSetupNotifcation() {
+    static func sendLibre2DirectFinishedSetupNotifcation() {
         ensureCanSendNotification {
             let content = UNMutableNotificationContent()
             content.title = "Libre 2 Direct Setup Complete"

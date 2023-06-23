@@ -9,7 +9,6 @@
 import SwiftUI
 import LocalAuthentication
 
-#if canImport(UIKit)
 extension View {
     func hideKeyboardPreIos16() {
         if #unavailable(iOS 16.0) {
@@ -17,7 +16,7 @@ extension View {
         }
     }
 }
-#endif
+
 struct LeadingImage: View {
     
     var image: UIImage

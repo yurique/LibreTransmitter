@@ -49,7 +49,7 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
             sensorInfoObervable: self.sensorInfoObservable,
             glucoseInfoObservable: self.glucoseInfoObservable,
             alarmStatus: self.alarmStatus,
-            service: self.service
+            pairingService: self.pairingService
         )
 
         let nav = CGMManagerSettingsNavigationViewController(rootViewController: settings)

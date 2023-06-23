@@ -274,7 +274,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 
     internal var countTimesWithoutData: Int = 0
 
-    open var service: SensorPairingProtocol {
+    open var pairingService: SensorPairingProtocol {
         return SensorPairingService()
     }
 }

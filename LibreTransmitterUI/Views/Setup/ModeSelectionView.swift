@@ -15,28 +15,22 @@ struct ModeSelectionView: View {
     @ObservedObject public var cancelNotifier: GenericObservableObject
     @ObservedObject public var saveNotifier: GenericObservableObject
 
-    var service: SensorPairingProtocol
+    var pairingService: SensorPairingProtocol
 
     var modeSelectSection : some View {
         Section(header: Text(LocalizedString("Connection options", comment: "Text describing options for connecting to sensor or transmitter"))) {
-            #if canImport(CoreNFC)
 
-                NavigationLink(destination: Libre2DirectSetup(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier, service: service)) {
-                    
-                    SettingsItem(title: LocalizedString("Libre 2 Direct", comment: "Libre 2 connection option"))
-                        .actionButtonStyle(.primary)
-                        .padding([.top, .bottom], 8)
-                        
-                }
-            
-            #endif
-            
-                NavigationLink(destination: BluetoothSelection(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier)) {
-                    SettingsItem(title: LocalizedString("Bluetooth Transmitters", comment: "Bluetooth Transmitter connection option"))
-                        .actionButtonStyle(.primary)
-                        .padding([.top, .bottom], 8)
-                }
+            NavigationLink(destination: Libre2DirectSetup(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier, pairingService: pairingService)) {
+                SettingsItem(title: LocalizedString("Libre 2 Direct", comment: "Libre 2 connection option"))
+                    .actionButtonStyle(.primary)
+                    .padding([.top, .bottom], 8)
+            }
 
+            NavigationLink(destination: BluetoothSelection(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier)) {
+                SettingsItem(title: LocalizedString("Bluetooth Transmitters", comment: "Bluetooth Transmitter connection option"))
+                    .actionButtonStyle(.primary)
+                    .padding([.top, .bottom], 8)
+            }
         }
     }
 
@@ -77,6 +71,6 @@ struct ModeSelectionView: View {
 
 struct ModeSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ModeSelectionView(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), service: SensorPairingService())
+        ModeSelectionView(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), pairingService: SensorPairingService())
     }
 }

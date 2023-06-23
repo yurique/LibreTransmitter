@@ -29,7 +29,7 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
         let cancelNotifier = GenericObservableObject()
         let saveNotifier = GenericObservableObject()
 
-        let myView = ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier, service: cgmManager.service)
+        let myView = ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier, pairingService: cgmManager.pairingService)
             .environmentObject(displayGlucosePreference)
 
         super.init(rootViewController: UIHostingController(rootView: myView))
@@ -73,7 +73,7 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
         } else if let newUID = SelectionState.shared.selectedUID {
             // this one is only temporary,
             // as we don't know the bluetooth identifier during nfc setup
-            logger.debug("Setupcontroller will set new libre2 device  to \(newUID)")
+            logger.debug("Setupcontroller will set new libre2 device to \(newUID.hex)")
 
             UserDefaults.standard.preSelectedUid = newUID
             SelectionState.shared.selectedUID = nil

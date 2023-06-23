@@ -17,9 +17,7 @@ class LibreDemoCGMManager: LibreTransmitterManagerV3 {
         "LibreDemoCGMManager"
     }
 
-
-    public override var service: SensorPairingProtocol {
+    public override var pairingService: SensorPairingProtocol {
         return MockSensorPairingService()
     }
-    
 }

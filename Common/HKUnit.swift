@@ -8,7 +8,6 @@
 
 import HealthKit
 
-/* not needed for loop dev/jojo ? */
 extension HKUnit {
     static let milligramsPerDeciliter: HKUnit = {
         HKUnit.gramUnit(with: .milli).unitDivided(by: .literUnit(with: .deci))

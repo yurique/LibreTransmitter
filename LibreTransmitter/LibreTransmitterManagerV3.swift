@@ -125,7 +125,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         completion(.noData)
     }
 
-    internal var lastConnected: Date?
+    public var lastConnected: Date?
 
     public internal(set) var alarmStatus = AlarmStatus()
 

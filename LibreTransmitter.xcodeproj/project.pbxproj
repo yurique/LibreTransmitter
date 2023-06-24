@@ -130,6 +130,7 @@
 		C1C318D52A47638E00C6F29F /* FakeSensorPairingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2709A6F229E5E0D3004355A3 /* FakeSensorPairingData.swift */; };
 		C1C318D62A47638E00C6F29F /* MockBluetoothSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C318CF2A4748A100C6F29F /* MockBluetoothSearcher.swift */; };
 		C1C318D72A47638E00C6F29F /* MockSensorPairingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1BDBAFE2A44FFD800A787D1 /* MockSensorPairingService.swift */; };
+		C1C318D92A478E0000C6F29F /* HKUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C318D82A478E0000C6F29F /* HKUnit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -336,6 +337,7 @@
 		C1BDBAFD2A43992A00A787D1 /* LibreDemoCGMManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreDemoCGMManager.swift; sourceTree = "<group>"; };
 		C1BDBAFE2A44FFD800A787D1 /* MockSensorPairingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSensorPairingService.swift; sourceTree = "<group>"; };
 		C1C318CF2A4748A100C6F29F /* MockBluetoothSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBluetoothSearcher.swift; sourceTree = "<group>"; };
+		C1C318D82A478E0000C6F29F /* HKUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKUnit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -693,6 +695,7 @@
 				C1BDBAE22A4397AA00A787D1 /* LibreDemoPlugin.h */,
 				C1BDBAFC2A43985000A787D1 /* LibreDemoPlugin.swift */,
 				C1BDBAFD2A43992A00A787D1 /* LibreDemoCGMManager.swift */,
+				C1C318D82A478E0000C6F29F /* HKUnit.swift */,
 			);
 			path = LibreDemoPlugin;
 			sourceTree = "<group>";
@@ -1054,6 +1057,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1C318D92A478E0000C6F29F /* HKUnit.swift in Sources */,
 				C1BDBAED2A4397E200A787D1 /* OSLog.swift in Sources */,
 				C1BDBB002A45051B00A787D1 /* LibreDemoPlugin.swift in Sources */,
 				C1BDBAEE2A4397E200A787D1 /* LibreTransmitterPlugin.swift in Sources */,

@@ -56,6 +56,7 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
 
         let hostedView = DismissibleHostingController(
             rootView: settingsView
+                .navigationTitle(self.displayTitle)
                 .environmentObject(displayGlucosePreference)
         )
 

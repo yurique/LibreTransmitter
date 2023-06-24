@@ -279,6 +279,10 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         return BluetoothSearchManager()
     }
 
+    open var displayTitle: String {
+        return "FreeStyle Libre"
+    }
+
 }
 
 // MARK: - Convenience functions

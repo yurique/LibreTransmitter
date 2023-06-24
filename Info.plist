@@ -23,7 +23,7 @@
 	<key>NSPrincipalClass</key>
 	<string>LibreDemoPlugin.LibreDemoPlugin</string>
 	<key>com.loopkit.Loop.CGMManagerDisplayName</key>
-	<string>Libre Demo CGM</string>
+	<string>FreeStyle Libre Demo</string>
 	<key>com.loopkit.Loop.CGMManagerIdentifier</key>
 	<string>LibreDemoCGMManager</string>
 </dict>

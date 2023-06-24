@@ -13,6 +13,7 @@ import LoopKit
 import LoopKitUI
 import HealthKit
 import os.log
+import LoopTestingKit
 
 class LibreDemoCGMManager: LibreTransmitterManagerV3 {
     var timer: Timer?
@@ -59,10 +60,42 @@ class LibreDemoCGMManager: LibreTransmitterManagerV3 {
             trendRate: nil,
             isDisplayOnly: false,
             wasUserEntered: false,
-            syncIdentifier: "mock-libre + \(date)")
+            syncIdentifier: "mock-libre + \(date)",
+            device: testingDevice
+        )
         log.debug("Reporting mock value of %{public}@", String(describing: value))
         self.delegateQueue.async {
             self.cgmManagerDelegate?.cgmManager(self, hasNew: CGMReadingResult.newData([newSample]))
         }
+    }
+
+    override var displayTitle: String {
+        return "Libre Demo"
+    }
+}
+
+extension LibreDemoCGMManager: TestingCGMManager {
+    func injectGlucoseSamples(_ pastSamples: [LoopKit.NewGlucoseSample], futureSamples: [LoopKit.NewGlucoseSample]) {
+        // TODO: Support scenarios
+    }
+
+    var testingDevice: HKDevice {
+        HKDevice(
+            name: "LibreDemoCGM",
+            manufacturer: "LoopKit",
+            model: nil,
+            hardwareVersion: nil,
+            firmwareVersion: nil,
+            softwareVersion: nil,
+            localIdentifier: nil,
+            udiDeviceIdentifier: nil
+        )
+    }
+
+    func acceptDefaultsAndSkipOnboarding() {
+    }
+
+    func trigger(action: LoopTestingKit.DeviceAction) {
+        // TODO: Support scenario actions
     }
 }

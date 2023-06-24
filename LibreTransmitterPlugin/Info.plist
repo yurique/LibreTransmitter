@@ -23,7 +23,7 @@
 	<key>NSPrincipalClass</key>
 	<string>LibreTransmitterPlugin</string>
 	<key>com.loopkit.Loop.CGMManagerDisplayName</key>
-	<string>Libre ThirdParty Transmitter</string>
+	<string>FreeStyle Libre</string>
 	<key>com.loopkit.Loop.CGMManagerIdentifier</key>
 	<string>LibreTransmitterManagerV3</string>
 </dict>

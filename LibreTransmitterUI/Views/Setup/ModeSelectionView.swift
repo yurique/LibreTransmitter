@@ -16,6 +16,7 @@ struct ModeSelectionView: View {
     @ObservedObject public var saveNotifier: GenericObservableObject
 
     var pairingService: SensorPairingProtocol
+    var bluetoothSearcher: BluetoothSearcher
 
     var modeSelectSection : some View {
         Section(header: Text(LocalizedString("Connection options", comment: "Text describing options for connecting to sensor or transmitter"))) {
@@ -26,7 +27,7 @@ struct ModeSelectionView: View {
                     .padding([.top, .bottom], 8)
             }
 
-            NavigationLink(destination: BluetoothSelection(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier)) {
+            NavigationLink(destination: BluetoothSelection(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier, searcher: bluetoothSearcher)) {
                 SettingsItem(title: LocalizedString("Bluetooth Transmitters", comment: "Bluetooth Transmitter connection option"))
                     .actionButtonStyle(.primary)
                     .padding([.top, .bottom], 8)
@@ -71,6 +72,6 @@ struct ModeSelectionView: View {
 
 struct ModeSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ModeSelectionView(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), pairingService: SensorPairingService())
+        ModeSelectionView(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), pairingService: SensorPairingService(), bluetoothSearcher: BluetoothSearchManager())
     }
 }

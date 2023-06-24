@@ -45,7 +45,7 @@ class Libre2DirectTransmitter: LibreTransmitterProxyProtocol {
     private var sensorData: SensorData?
     private var metadata: LibreTransmitterMetadata?
 
-    class func canSupportPeripheral(_ peripheral: CBPeripheral) -> Bool {
+    class func canSupportPeripheral(_ peripheral: PeripheralProtocol) -> Bool {
         peripheral.name?.lowercased().starts(with: "abbott") ?? false
     }
 

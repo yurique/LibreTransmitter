@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import LibreTransmitter
 
 // https://github.com/NightscoutFoundation/xDrip/blob/579d365a94cb1fa2ad28b692efb05036928a5dd3/wear/src/main/java/com/eveningoutpost/dexdrip/NFCReaderX.java#L95
 public struct FakeSensorPairingData {
@@ -21,7 +21,7 @@ public struct FakeSensorPairingData {
     public init() {
     }
     
-    public func fakeSensorPairingInfo() -> SensorPairingInfo{
+    public func fakeSensorPairingInfo() -> SensorPairingInfo {
         SensorPairingInfo(uuid: Data(de_new_patch_uid), patchInfo: Data(de_new_patch_info), fram: Data(de_new_packet), streamingEnabled: true, sensorName: sensorName)
     }
 }

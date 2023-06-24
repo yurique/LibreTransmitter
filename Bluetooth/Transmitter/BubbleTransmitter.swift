@@ -58,7 +58,7 @@ class BubbleTransmitter: MiaoMiaoTransmitter {
          UIImage(named: "bubble", in: Bundle.current, compatibleWith: nil)
     }
 
-    override static func canSupportPeripheral(_ peripheral: CBPeripheral) -> Bool {
+    override static func canSupportPeripheral(_ peripheral: PeripheralProtocol) -> Bool {
         peripheral.name?.lowercased().starts(with: "bubble") ?? false
     }
 
@@ -93,7 +93,7 @@ class BubbleTransmitter: MiaoMiaoTransmitter {
 
     private static func getDeviceDetailsFromAdvertisementInternal(advertisementData: [String: Any]?) -> (String?, String?, String?) {
 
-        guard let data = advertisementData?["kCBAdvDataManufacturerData"] as? Data else {
+        guard let data = advertisementData?[CBAdvertisementDataManufacturerDataKey] as? Data else {
             return (nil, nil, nil)
         }
         var mac = ""

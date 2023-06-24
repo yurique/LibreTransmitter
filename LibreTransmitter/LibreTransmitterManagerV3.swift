@@ -277,6 +277,11 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
     open var pairingService: SensorPairingProtocol {
         return SensorPairingService()
     }
+
+    open var bluetoothSearcher: BluetoothSearcher {
+        return BluetoothSearchManager()
+    }
+
 }
 
 // MARK: - Convenience functions

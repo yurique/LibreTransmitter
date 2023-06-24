@@ -29,7 +29,7 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
         let cancelNotifier = GenericObservableObject()
         let saveNotifier = GenericObservableObject()
 
-        let myView = ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier, pairingService: cgmManager.pairingService)
+        let myView = ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier, pairingService: cgmManager.pairingService, bluetoothSearcher: cgmManager.bluetoothSearcher)
             .environmentObject(displayGlucosePreference)
 
         super.init(rootViewController: UIHostingController(rootView: myView))

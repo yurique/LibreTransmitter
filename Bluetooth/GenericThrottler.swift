@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class GenericThrottler<T, U: Hashable> {
+public class GenericThrottler<T, U: Hashable> {
 
     public var throttledPublisher: AnyPublisher<T, Never> {
         throttledSubject.eraseToAnyPublisher()
@@ -88,7 +88,7 @@ class GenericThrottler<T, U: Hashable> {
         .store(in: &bag)
     }
 
-    init(identificator: KeyPath<T, U>, interval: TimeInterval) {
+    public init(identificator: KeyPath<T, U>, interval: TimeInterval) {
         self.identificator = identificator
         self.interval = interval
 

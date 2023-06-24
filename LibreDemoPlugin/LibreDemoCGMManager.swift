@@ -20,4 +20,8 @@ class LibreDemoCGMManager: LibreTransmitterManagerV3 {
     public override var pairingService: SensorPairingProtocol {
         return MockSensorPairingService()
     }
+
+    public override var bluetoothSearcher: BluetoothSearcher {
+        return MockBluetoothSearcher()
+    }
 }

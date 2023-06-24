@@ -249,8 +249,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         disconnect()
     }
 
-    // lazy because we don't want to scan immediately
-    public lazy var proxy: LibreTransmitterProxyManager? = LibreTransmitterProxyManager()
+    public var proxy: LibreTransmitterProxyManager? = LibreTransmitterProxyManager()
 
     /*
      These properties are mostly useful for swiftui

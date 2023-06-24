@@ -7,22 +7,24 @@
 //
 
 import Foundation
-import LibreTransmitter
 import os.log
 import Combine
 import CoreBluetooth
 
-struct MockBluetoothSearcher: BluetoothSearcher {
+public struct MockBluetoothSearcher: BluetoothSearcher {
     fileprivate lazy var logger = Logger(forType: Self.self)
 
     public let throttledRSSI = GenericThrottler(identificator: \RSSIInfo.bledeviceID, interval: 5)
     public let passThroughMetaData = PassthroughSubject<(PeripheralProtocol, [String: Any]), Never>()
 
-    func disconnectManually() {
+    public init() {
+    }
+
+    public func disconnectManually() {
         print("Mock searcher disconnecting")
     }
 
-    func scanForCompatibleDevices() {
+    public func scanForCompatibleDevices() {
         print("Mock searcher scanning")
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             for device in mockData {
@@ -31,19 +33,17 @@ struct MockBluetoothSearcher: BluetoothSearcher {
         }
     }
 
-    func stopTimer() {
+    public func stopTimer() {
         print("Mock searcher stop timer")
     }
 
     var mockData: [PeripheralProtocol] {
         [
-            MockedPeripheral(name: "device1"),
-            MockedPeripheral(name: "device2"),
-            MockedPeripheral(name: "device3"),
-            MockedPeripheral(name: "device4")
+            MockedPeripheral(name: "miaomiaoMockTransmitter"),
+            MockedPeripheral(name: "bubbleMockTransmitter"),
+            MockedPeripheral(name: "abbottMockSensor"),
         ]
     }
-
 }
 
 public class MockedPeripheral: PeripheralProtocol, Identifiable {

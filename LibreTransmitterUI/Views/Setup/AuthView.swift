@@ -160,6 +160,6 @@ struct AuthView: View {
 
 struct AuthView_Previews: PreviewProvider {
     static var previews: some View {
-        AuthView(completeNotifier: GenericObservableObject(), notifyReset: GenericObservableObject(), notifyReconnect: GenericObservableObject(), pairingService: SensorPairingService(), bluetoothSearcher: BluetoothSearchManager())
+        AuthView(completeNotifier: GenericObservableObject(), notifyReset: GenericObservableObject(), notifyReconnect: GenericObservableObject(), pairingService: MockSensorPairingService(), bluetoothSearcher: MockBluetoothSearcher())
     }
 }

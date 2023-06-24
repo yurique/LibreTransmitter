@@ -41,19 +41,25 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
         
         let wantToRestablishConnectionNotifier = GenericObservableObject()
 
-        let settings = SettingsView.asHostedViewController(
-            displayGlucosePreference: displayGlucosePreference,
-            notifyComplete: doneNotifier, notifyDelete: wantToTerminateNotifier,
-            notifyReset: wantToResetCGMManagerNotifier, notifyReconnect:wantToRestablishConnectionNotifier,
-            transmitterInfoObservable: self.transmitterInfoObservable,
-            sensorInfoObervable: self.sensorInfoObservable,
-            glucoseInfoObservable: self.glucoseInfoObservable,
+        let settingsView = SettingsView(
+            transmitterInfo: self.transmitterInfoObservable,
+            sensorInfo: self.sensorInfoObservable,
+            glucoseMeasurement: self.glucoseInfoObservable,
+            notifyComplete: doneNotifier,
+            notifyDelete: wantToTerminateNotifier,
+            notifyReset: wantToResetCGMManagerNotifier,
+            notifyReconnect:wantToRestablishConnectionNotifier,
             alarmStatus: self.alarmStatus,
             pairingService: self.pairingService,
             bluetoothSearcher: self.bluetoothSearcher
         )
 
-        let nav = CGMManagerSettingsNavigationViewController(rootViewController: settings)
+        let hostedView = DismissibleHostingController(
+            rootView: settingsView
+                .environmentObject(displayGlucosePreference)
+        )
+
+        let nav = CGMManagerSettingsNavigationViewController(rootViewController: hostedView)
         nav.navigationItem.largeTitleDisplayMode = .always
         nav.navigationBar.prefersLargeTitles = true
         

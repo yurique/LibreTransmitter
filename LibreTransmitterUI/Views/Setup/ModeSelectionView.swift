@@ -72,6 +72,6 @@ struct ModeSelectionView: View {
 
 struct ModeSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ModeSelectionView(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), pairingService: SensorPairingService(), bluetoothSearcher: BluetoothSearchManager())
+        ModeSelectionView(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), pairingService: MockSensorPairingService(), bluetoothSearcher: MockBluetoothSearcher())
     }
 }

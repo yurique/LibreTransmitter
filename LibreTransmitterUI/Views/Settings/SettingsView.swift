@@ -78,35 +78,29 @@ struct SettingsView: View {
     var pairingService: SensorPairingProtocol
     var bluetoothSearcher: BluetoothSearcher
 
-    static func asHostedViewController(
-        displayGlucosePreference: DisplayGlucosePreference,
+    init(
+        transmitterInfo: LibreTransmitter.TransmitterInfo,
+        sensorInfo: LibreTransmitter.SensorInfo,
+        glucoseMeasurement: LibreTransmitter.GlucoseInfo,
         notifyComplete: GenericObservableObject,
         notifyDelete: GenericObservableObject,
         notifyReset: GenericObservableObject,
         notifyReconnect: GenericObservableObject,
-        transmitterInfoObservable: LibreTransmitter.TransmitterInfo,
-        sensorInfoObervable: LibreTransmitter.SensorInfo,
-        glucoseInfoObservable: LibreTransmitter.GlucoseInfo,
         alarmStatus: LibreTransmitter.AlarmStatus,
         pairingService: SensorPairingProtocol,
-        bluetoothSearcher: BluetoothSearcher
-    ) -> DismissibleHostingController
+        bluetoothSearcher: BluetoothSearcher)
     {
-        let view = self.init(
-            transmitterInfo: transmitterInfoObservable,
-            sensorInfo: sensorInfoObervable,
-            glucoseMeasurement: glucoseInfoObservable,
-            notifyComplete: notifyComplete,
-            notifyDelete: notifyDelete,
-            notifyReset: notifyReset,
-            notifyReconnect: notifyReconnect,
-            alarmStatus: alarmStatus,
-            pairingService: pairingService,
-            bluetoothSearcher: bluetoothSearcher
-        ).environmentObject(displayGlucosePreference)
-        return DismissibleHostingController(rootView: view)
+        self.transmitterInfo = transmitterInfo
+        self.sensorInfo = sensorInfo
+        self.glucoseMeasurement = glucoseMeasurement
+        self.notifyComplete = notifyComplete
+        self.notifyDelete = notifyDelete
+        self.notifyReset = notifyReset
+        self.notifyReconnect = notifyReconnect
+        self.alarmStatus = alarmStatus
+        self.pairingService = pairingService
+        self.bluetoothSearcher = bluetoothSearcher
     }
-
 
     private var glucoseUnit: HKUnit {
         displayGlucosePreference.unit

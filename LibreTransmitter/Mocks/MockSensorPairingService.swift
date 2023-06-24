@@ -7,11 +7,10 @@
 //
 
 import Foundation
-import LibreTransmitter
 import Combine
 import os.log
 
-class MockSensorPairingService: SensorPairingProtocol {
+public class MockSensorPairingService: SensorPairingProtocol {
 
     fileprivate lazy var logger = Logger(forType: Self.self)
 
@@ -21,13 +20,16 @@ class MockSensorPairingService: SensorPairingProtocol {
         readingsSubject.eraseToAnyPublisher()
     }
 
+    public init() {
+    }
+
     private func sendUpdate(_ info: SensorPairingInfo) {
         DispatchQueue.main.async { [weak self] in
             self?.readingsSubject.send(info)
         }
     }
 
-    func pairSensor() throws {
+    public func pairSensor() throws {
         let info = FakeSensorPairingData().fakeSensorPairingInfo()
         logger.debug("Sending fake sensor pairinginfo: \(info.description)")
         //delay a bit to simulate a real tag readout

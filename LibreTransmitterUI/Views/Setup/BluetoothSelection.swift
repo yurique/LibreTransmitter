@@ -244,7 +244,7 @@ struct BluetoothSelection: View {
             }
         }
     }
-    var list : some View {
+    var deviceList : some View {
         List {
             Section(header: header) {
                 ForEach(allDevices, id: \.name) { device in
@@ -285,33 +285,34 @@ struct BluetoothSelection: View {
     }
 
     var body: some View {
-        list.onReceive(searcher.passThroughMetaData) { newDevice, advertisement in
-            print("received searcher passthrough")
+        deviceList
+            .onReceive(searcher.passThroughMetaData) { newDevice, advertisement in
+                print("received searcher passthrough")
 
-            let alreadyAdded = allDevices.contains { existingDevice -> Bool in
-                existingDevice.asStringIdentifier == newDevice.asStringIdentifier
-            }
-            if !alreadyAdded {
-                if let pluginForDevice = LibreTransmitters.getSupportedPlugins(newDevice)?.first {
+                let alreadyAdded = allDevices.contains { existingDevice -> Bool in
+                    existingDevice.asStringIdentifier == newDevice.asStringIdentifier
+                }
+                if !alreadyAdded {
+                    if let pluginForDevice = LibreTransmitters.getSupportedPlugins(newDevice)?.first {
 
-                    deviceRequiresPhoneNFC[newDevice.asStringIdentifier] = pluginForDevice.requiresPhoneNFC
-                    deviceRequiresSetup[newDevice.asStringIdentifier] = pluginForDevice.requiresSetup
+                        deviceRequiresPhoneNFC[newDevice.asStringIdentifier] = pluginForDevice.requiresPhoneNFC
+                        deviceRequiresSetup[newDevice.asStringIdentifier] = pluginForDevice.requiresSetup
 
-                    if let parsedAdvertisement = pluginForDevice.getDeviceDetailsFromAdvertisement(advertisementData: advertisement) {
+                        if let parsedAdvertisement = pluginForDevice.getDeviceDetailsFromAdvertisement(advertisementData: advertisement) {
 
-                        deviceDetails[newDevice.asStringIdentifier] = parsedAdvertisement
+                            deviceDetails[newDevice.asStringIdentifier] = parsedAdvertisement
+                        } else {
+                            deviceDetails[newDevice.asStringIdentifier] = ""
+                        }
+
                     } else {
-                        deviceDetails[newDevice.asStringIdentifier] = ""
+                        deviceDetails[newDevice.asStringIdentifier] = newDevice.asStringIdentifier
                     }
 
-                } else {
-                    deviceDetails[newDevice.asStringIdentifier] = newDevice.asStringIdentifier
+                    allDevices.append(newDevice)
                 }
-
-                allDevices.append(newDevice)
             }
-        }
-        .onReceive(searcher.throttledRSSI.throttledPublisher, perform: receiveRSSI)
+            .onReceive(searcher.throttledRSSI.throttledPublisher, perform: receiveRSSI)
     }
 }
 
@@ -320,6 +321,6 @@ struct BluetoothSelection_Previews: PreviewProvider {
         let testData = SelectionState.shared
         testData.selectedStringIdentifier = "device4"
 
-        return BluetoothSelection(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), searcher: BluetoothSearchManager())
+        return BluetoothSelection(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), searcher: MockBluetoothSearcher())
     }
 }

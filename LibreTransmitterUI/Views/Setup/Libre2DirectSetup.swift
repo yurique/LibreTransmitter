@@ -136,6 +136,6 @@ struct Libre2DirectSetup: View {
 
 struct Libre2DirectSetup_Previews: PreviewProvider {
     static var previews: some View {
-        Libre2DirectSetup(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), pairingService: SensorPairingService())
+        Libre2DirectSetup(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), pairingService: MockSensorPairingService())
     }
 }

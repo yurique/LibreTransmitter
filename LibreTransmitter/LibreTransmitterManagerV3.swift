@@ -119,8 +119,6 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         ].joined(separator: "\n")
     }
 
-    // public var miaomiaoService: MiaomiaoService
-
     public func fetchNewDataIfNeeded(_ completion: @escaping (CGMReadingResult) -> Void) {
         logger.debug("fetchNewDataIfNeeded called but we don't continue")
 

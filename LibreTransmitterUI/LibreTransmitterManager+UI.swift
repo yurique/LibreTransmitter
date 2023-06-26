@@ -72,7 +72,7 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
         
         wantToRestablishConnectionNotifier.listenOnce { [weak self, weak nav] in
             self?.logger.debug("CGM wants to RestablishConnection")
-            self?.reEstablishProxy()
+            self?.establishProxy()
             nav?.notifyComplete()
         }
         

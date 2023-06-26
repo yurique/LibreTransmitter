@@ -85,6 +85,9 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
             // stored both preSelectedDevice and selectedUID !
         }
 
+
+        cgmManager.establishProxy()
+
         logger.debug("Setupcontroller Saving from setup")
         cgmManagerOnboardingDelegate?.cgmManagerOnboarding(didCreateCGMManager: cgmManager)
         cgmManagerOnboardingDelegate?.cgmManagerOnboarding(didOnboardCGMManager: cgmManager)

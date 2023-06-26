@@ -212,8 +212,14 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 
         logger.debug("LibreTransmitterManager will be created now")
         NotificationHelper.requestNotificationPermissionsIfNeeded()
-        
-        proxy?.delegate = self
+
+        if isDeviceSelected {
+            establishProxy()
+        }
+    }
+
+    var isDeviceSelected: Bool {
+        return UserDefaults.standard.preSelectedDevice != nil || UserDefaults.standard.preSelectedUid != nil
     }
     
     public func resetManager() {
@@ -235,12 +241,11 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         lastDirectUpdate = nil
     }
     
-    public func reEstablishProxy() {
-        logger.debug("LibreTransmitterManager re-establish called")
+    open func establishProxy() {
+        logger.debug("LibreTransmitterManager establishProxy called")
 
         proxy = LibreTransmitterProxyManager()
         proxy?.delegate = self
-        
     }
 
     deinit {
@@ -249,7 +254,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         disconnect()
     }
 
-    public var proxy: LibreTransmitterProxyManager? = LibreTransmitterProxyManager()
+    public var proxy: LibreTransmitterProxyManager?
 
     /*
      These properties are mostly useful for swiftui

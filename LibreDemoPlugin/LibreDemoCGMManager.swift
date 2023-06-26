@@ -33,6 +33,10 @@ class LibreDemoCGMManager: LibreTransmitterManagerV3 {
         return MockBluetoothSearcher()
     }
 
+    public override func establishProxy() {
+        // do nothing
+    }
+
     public required init() {
         super.init()
 

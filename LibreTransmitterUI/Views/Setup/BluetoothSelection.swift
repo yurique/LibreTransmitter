@@ -171,15 +171,6 @@ private struct DeviceItem: View {
     }
 }
 
-// Decided to use shared instance instead of .environmentObject()
-class SelectionState: ObservableObject {
-    @Published var selectedStringIdentifier: String? = ""
-
-    @Published var selectedUID: Data?
-
-    static var shared = SelectionState()
-}
-
 struct BluetoothSelection: View {
     @ObservedObject var selection: SelectionState = .shared
     @ObservedObject public var cancelNotifier: GenericObservableObject

@@ -115,6 +115,7 @@
 		B40BF26623ABD4E700A43CEE /* LibreTransmitterPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BF26523ABD4E700A43CEE /* LibreTransmitterPlugin.swift */; };
 		B40BF26823ABD55200A43CEE /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BF26723ABD55200A43CEE /* OSLog.swift */; };
 		B40BF26923ABD55200A43CEE /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BF26723ABD55200A43CEE /* OSLog.swift */; };
+		C1AF65982A49C902008D0690 /* SelectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF65972A49C902008D0690 /* SelectionState.swift */; };
 		C1BDBAED2A4397E200A787D1 /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BF26723ABD55200A43CEE /* OSLog.swift */; };
 		C1BDBAEE2A4397E200A787D1 /* LibreTransmitterPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BF26523ABD4E700A43CEE /* LibreTransmitterPlugin.swift */; };
 		C1BDBAF02A4397E200A787D1 /* LibreTransmitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 432B0E881CDFC3C50045347B /* LibreTransmitter.framework */; };
@@ -330,6 +331,7 @@
 		B40BF26423ABD4E600A43CEE /* LibreTransmitterPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LibreTransmitterPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
 		B40BF26523ABD4E700A43CEE /* LibreTransmitterPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreTransmitterPlugin.swift; sourceTree = "<group>"; };
 		B40BF26723ABD55200A43CEE /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
+		C1AF65972A49C902008D0690 /* SelectionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionState.swift; sourceTree = "<group>"; };
 		C1BDBAE22A4397AA00A787D1 /* LibreDemoPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibreDemoPlugin.h; sourceTree = "<group>"; };
 		C1BDBAFA2A4397E200A787D1 /* LibreDemoPlugin.loopplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibreDemoPlugin.loopplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1BDBAFB2A4397E200A787D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = /Users/pete/dev/LoopWorkspace/LibreTransmitter/Info.plist; sourceTree = "<absolute>"; };
@@ -580,6 +582,7 @@
 				27DD8F25268FA75A00649010 /* SensorInfo.swift */,
 				27DD8F27268FA79800649010 /* GlucoseInfo.swift */,
 				27ED67B72698EF38003E5DAB /* AlarmStatus.swift */,
+				C1AF65972A49C902008D0690 /* SelectionState.swift */,
 			);
 			path = Observables;
 			sourceTree = "<group>";
@@ -952,6 +955,7 @@
 				C1C318D72A47638E00C6F29F /* MockSensorPairingService.swift in Sources */,
 				2746C73C26D91FC900E31BD9 /* Libre2DirectTransmitter.swift in Sources */,
 				27F93B2C2816B93900EE39A7 /* LibreTransmitterManager+Transmitters.swift in Sources */,
+				C1AF65982A49C902008D0690 /* SelectionState.swift in Sources */,
 				27850CFB25672C0C0020D109 /* GlucoseSchedules.swift in Sources */,
 				C1C318CD2A47468D00C6F29F /* BluetoothSearch.swift in Sources */,
 				27850D9125672F020020D109 /* CBPeripheralExtensions.swift in Sources */,

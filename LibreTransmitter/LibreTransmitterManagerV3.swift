@@ -219,7 +219,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
     }
 
     var isDeviceSelected: Bool {
-        return UserDefaults.standard.preSelectedDevice != nil || UserDefaults.standard.preSelectedUid != nil || UserDefaults.standard.preSelectedDevice != nil || SelectionState.shared.selectedUID != nil
+        return UserDefaults.standard.preSelectedDevice != nil || UserDefaults.standard.preSelectedUid != nil || SelectionState.shared.selectedUID != nil
     }
     
     public func resetManager() {

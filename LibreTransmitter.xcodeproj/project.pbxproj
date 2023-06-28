@@ -115,6 +115,8 @@
 		B40BF26623ABD4E700A43CEE /* LibreTransmitterPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BF26523ABD4E700A43CEE /* LibreTransmitterPlugin.swift */; };
 		B40BF26823ABD55200A43CEE /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BF26723ABD55200A43CEE /* OSLog.swift */; };
 		B40BF26923ABD55200A43CEE /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BF26723ABD55200A43CEE /* OSLog.swift */; };
+		C1AF1D122A4BC18400F46A26 /* MockSensorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF1D112A4BC18400F46A26 /* MockSensorData.swift */; };
+		C1AF1D152A4BC23D00F46A26 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF1D142A4BC23D00F46A26 /* TimeInterval.swift */; };
 		C1AF65982A49C902008D0690 /* SelectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF65972A49C902008D0690 /* SelectionState.swift */; };
 		C1BDBAED2A4397E200A787D1 /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BF26723ABD55200A43CEE /* OSLog.swift */; };
 		C1BDBAEE2A4397E200A787D1 /* LibreTransmitterPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BF26523ABD4E700A43CEE /* LibreTransmitterPlugin.swift */; };
@@ -331,6 +333,8 @@
 		B40BF26423ABD4E600A43CEE /* LibreTransmitterPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LibreTransmitterPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
 		B40BF26523ABD4E700A43CEE /* LibreTransmitterPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreTransmitterPlugin.swift; sourceTree = "<group>"; };
 		B40BF26723ABD55200A43CEE /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
+		C1AF1D112A4BC18400F46A26 /* MockSensorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSensorData.swift; sourceTree = "<group>"; };
+		C1AF1D142A4BC23D00F46A26 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		C1AF65972A49C902008D0690 /* SelectionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionState.swift; sourceTree = "<group>"; };
 		C1BDBAE22A4397AA00A787D1 /* LibreDemoPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibreDemoPlugin.h; sourceTree = "<group>"; };
 		C1BDBAFA2A4397E200A787D1 /* LibreDemoPlugin.loopplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibreDemoPlugin.loopplugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -691,14 +695,23 @@
 			path = LibreTransmitterPlugin;
 			sourceTree = "<group>";
 		};
+		C1AF1D132A4BC22A00F46A26 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C1C318D82A478E0000C6F29F /* HKUnit.swift */,
+				C1AF1D142A4BC23D00F46A26 /* TimeInterval.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		C1BDBAE12A4397AA00A787D1 /* LibreDemoPlugin */ = {
 			isa = PBXGroup;
 			children = (
+				C1AF1D132A4BC22A00F46A26 /* Extensions */,
 				C1BDBAFB2A4397E200A787D1 /* Info.plist */,
 				C1BDBAE22A4397AA00A787D1 /* LibreDemoPlugin.h */,
 				C1BDBAFC2A43985000A787D1 /* LibreDemoPlugin.swift */,
 				C1BDBAFD2A43992A00A787D1 /* LibreDemoCGMManager.swift */,
-				C1C318D82A478E0000C6F29F /* HKUnit.swift */,
 			);
 			path = LibreDemoPlugin;
 			sourceTree = "<group>";
@@ -709,6 +722,7 @@
 				C1BDBAFE2A44FFD800A787D1 /* MockSensorPairingService.swift */,
 				2709A6F229E5E0D3004355A3 /* FakeSensorPairingData.swift */,
 				C1C318CF2A4748A100C6F29F /* MockBluetoothSearcher.swift */,
+				C1AF1D112A4BC18400F46A26 /* MockSensorData.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -985,6 +999,7 @@
 				C1C318D52A47638E00C6F29F /* FakeSensorPairingData.swift in Sources */,
 				27850DA525672F1C0020D109 /* LibreTransmitterProxyManager.swift in Sources */,
 				27850CF725672C0C0020D109 /* UserDefaults+Bluetooth.swift in Sources */,
+				C1AF1D122A4BC18400F46A26 /* MockSensorData.swift in Sources */,
 				271A39F52975844B0005FEDA /* NotificationHelperOverride.swift in Sources */,
 				27850CE725672C0C0020D109 /* DataExtensions.swift in Sources */,
 				27850D1225672CA60020D109 /* NotificationHelper.swift in Sources */,
@@ -1062,6 +1077,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1C318D92A478E0000C6F29F /* HKUnit.swift in Sources */,
+				C1AF1D152A4BC23D00F46A26 /* TimeInterval.swift in Sources */,
 				C1BDBAED2A4397E200A787D1 /* OSLog.swift in Sources */,
 				C1BDBB002A45051B00A787D1 /* LibreDemoPlugin.swift in Sources */,
 				C1BDBAEE2A4397E200A787D1 /* LibreTransmitterPlugin.swift in Sources */,

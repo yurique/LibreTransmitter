@@ -37,10 +37,13 @@ class LibreDemoCGMManager: LibreTransmitterManagerV3 {
         // do nothing
     }
 
+    private var sensorStartDate = Date().addingTimeInterval(TimeInterval(days: -1))
+
     public required init() {
         super.init()
 
         self.lastConnected =  Date()
+
 
         timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(5*60), repeats: true) { _ in
             self.reportMockSample()
@@ -68,6 +71,17 @@ class LibreDemoCGMManager: LibreTransmitterManagerV3 {
             device: testingDevice
         )
         log.debug("Reporting mock value of %{public}@", String(describing: value))
+
+        // must be inside this handler as setobservables "depend" on latestbackfill
+        let sensorData = MockSensorData(
+            minutesSinceStart: Int(Date().timeIntervalSince(sensorStartDate).minutes),
+            maxMinutesWearTime: Int(TimeInterval(days: 14).minutes),
+            state: .ready,
+            serialNumber: "12345",
+            footerCrc: 0xabcd,
+            date: Date())
+        self.setObservables(sensorData: sensorData, bleData: nil, metaData: nil)
+
         self.delegateQueue.async {
             self.cgmManagerDelegate?.cgmManager(self, hasNew: CGMReadingResult.newData([newSample]))
         }

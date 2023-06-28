@@ -317,7 +317,7 @@ extension LibreTransmitterManagerV3 {
 
     }
 
-    func setObservables(sensorData: SensorData?, bleData: Libre2.LibreBLEResponse?, metaData: LibreTransmitterMetadata?) {
+    public func setObservables(sensorData: SensorDataProtocol?, bleData: Libre2.LibreBLEResponse?, metaData: LibreTransmitterMetadata?) {
         logger.debug("setObservables called")
         DispatchQueue.main.async {
 

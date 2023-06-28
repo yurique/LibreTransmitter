@@ -17,7 +17,7 @@ import Foundation
 /// - expired:       0x05 sensor is expired
 /// - failure:       0x06 sensor has an error
 /// - unknown:       any other state
-enum SensorState {
+public enum SensorState {
     case notYetStarted
     case starting
     case ready

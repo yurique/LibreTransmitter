@@ -20,6 +20,12 @@ public struct LibreGlucose: Codable, Hashable {
 
     public var timestamp: Date
 
+    public init(unsmoothedGlucose: Double, glucoseDouble: Double, error: [MeasurementError] = [MeasurementError.OK], timestamp: Date) {
+        self.unsmoothedGlucose = unsmoothedGlucose
+        self.glucoseDouble = glucoseDouble
+        self.timestamp = timestamp
+    }
+
     public static func timeDifference(oldGlucose: LibreGlucose, newGlucose: LibreGlucose) -> TimeInterval {
         newGlucose.startDate.timeIntervalSince(oldGlucose.startDate)
     }

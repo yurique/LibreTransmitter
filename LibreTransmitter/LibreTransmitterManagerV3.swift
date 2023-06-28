@@ -131,7 +131,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 
     internal var latestPrediction: LibreGlucose?
 
-    internal var latestBackfill: LibreGlucose? {
+    public var latestBackfill: LibreGlucose? {
         willSet(newValue) {
             guard let newValue else {
                 return

@@ -243,7 +243,9 @@ struct SettingsView: View {
                         self.authenticate { success in
                             print("got authentication response: \(success)")
                             if success {
-                                notifyDelete.notify()
+                                DispatchQueue.main.async {
+                                    notifyDelete.notify()
+                                }
                             }
                         }
                         

@@ -74,12 +74,15 @@ class LibreDemoCGMManager: LibreTransmitterManagerV3 {
 
         // must be inside this handler as setobservables "depend" on latestbackfill
         let sensorData = MockSensorData(
-            minutesSinceStart: Int(Date().timeIntervalSince(sensorStartDate).minutes),
+            minutesSinceStart: Int(date.timeIntervalSince(sensorStartDate).minutes),
             maxMinutesWearTime: Int(TimeInterval(days: 14).minutes),
             state: .ready,
             serialNumber: "12345",
             footerCrc: 0xabcd,
-            date: Date())
+            date: date)
+
+        self.latestBackfill = LibreGlucose(unsmoothedGlucose: value, glucoseDouble: value, timestamp: date)
+
         self.setObservables(sensorData: sensorData, bleData: nil, metaData: nil)
 
         self.delegateQueue.async {

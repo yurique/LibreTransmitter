@@ -21,6 +21,8 @@ class LibreDemoCGMManager: LibreTransmitterManagerV3 {
     private let log = OSLog(category: "LibreDemoCGMManager")
 
 
+    override var localizedTitle: String { "Libre Demo" }
+
     public override var managerIdentifier: String {
         "LibreDemoCGMManager"
     }
@@ -88,10 +90,6 @@ class LibreDemoCGMManager: LibreTransmitterManagerV3 {
         self.delegateQueue.async {
             self.cgmManagerDelegate?.cgmManager(self, hasNew: CGMReadingResult.newData([newSample]))
         }
-    }
-
-    override var displayTitle: String {
-        return "Libre Demo"
     }
 }
 

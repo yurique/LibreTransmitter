@@ -24,10 +24,16 @@ struct Libre2DirectSetup: View {
     @ObservedObject public var cancelNotifier: GenericObservableObject
     @ObservedObject public var saveNotifier: GenericObservableObject
     
-    var pairingService: SensorPairingProtocol
+    let pairingService: SensorPairingProtocol
 
     func pairSensor() {
 
+        pairingService.onCancel = {
+            DispatchQueue.main.async {
+                isPairing = false
+            }
+        }
+        
         showPairingInfo = false
         isPairing = true
 

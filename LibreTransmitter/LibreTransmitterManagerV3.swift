@@ -198,7 +198,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         [:]
     }
 
-    public let localizedTitle = LocalizedString("Libre Bluetooth", comment: "Title for the CGMManager option")
+    open var localizedTitle: String { "FreeStyle Libre" }
 
     public let appURL: URL? = nil // URL(string: "spikeapp://")
 
@@ -283,11 +283,6 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
     open var bluetoothSearcher: BluetoothSearcher {
         return BluetoothSearchManager()
     }
-
-    open var displayTitle: String {
-        return "FreeStyle Libre"
-    }
-
 }
 
 // MARK: - Convenience functions

@@ -72,9 +72,8 @@ public class SensorPairingInfo: ObservableObject, Codable {
 
 }
 
-public protocol SensorPairingProtocol {
+public protocol SensorPairingProtocol: AnyObject {
+    var onCancel: (() -> Void)? { get set }
     var publisher: AnyPublisher<SensorPairingInfo, Never> { get }
-
     func pairSensor() throws
-
 }

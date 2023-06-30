@@ -11,10 +11,11 @@ import Combine
 import os.log
 
 public class MockSensorPairingService: SensorPairingProtocol {
-
     fileprivate lazy var logger = Logger(forType: Self.self)
 
     private var readingsSubject = PassthroughSubject<SensorPairingInfo, Never>()
+
+    public var onCancel: (() -> Void)?
 
     public var publisher: AnyPublisher<SensorPairingInfo, Never> {
         readingsSubject.eraseToAnyPublisher()

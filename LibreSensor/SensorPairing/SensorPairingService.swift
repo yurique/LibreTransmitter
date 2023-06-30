@@ -57,6 +57,8 @@ public class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, Sensor
 
     private let unlockCode: UInt32 = 42 // 42
 
+    public var onCancel: (() -> Void)?
+
     public func pairSensor() throws {
         if !Features.phoneNFCAvailable {
             throw PairingError.nfcNotSupported
@@ -100,6 +102,8 @@ public class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, Sensor
             session.invalidate(errorMessage: "Connection failure: \(error.localizedDescription)")
             self.sendError(error)
         }
+
+        self.onCancel?()
     }
 
     public func tagReaderSession(_ session: NFCTagReaderSession, didDetect tags: [NFCTag]) {
@@ -198,8 +202,6 @@ public class SensorPairingService: NSObject, NFCTagReaderSessionDelegate, Sensor
 
                                             self.sendUpdate(SensorPairingInfo(uuid: sensorUID, patchInfo: patchInfo, fram: Data(decryptedBytes), streamingEnabled: streamingEnabled))
                                             session.invalidate()
-                                            
-
                                             return
                                         } catch {
                                             print("problem decrypting")

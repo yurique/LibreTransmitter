@@ -21,64 +21,13 @@ public enum Either<A, B> {
   case Right(B)
 }
 
-public typealias SomePeripheral = Either<CBPeripheral, MockedPeripheral>
 
-extension SomePeripheral: PeripheralProtocol, Identifiable, Hashable, Equatable {
-    public static func == (lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
-        lhs.asStringIdentifier == rhs.asStringIdentifier
-    }
-
-    public var id: String {
-        actualPeripheral.asStringIdentifier
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(actualPeripheral.asStringIdentifier)
-    }
-
-    private var actualPeripheral: PeripheralProtocol {
-        switch self {
-        case let .Left(real):
-            return real
-        case let .Right(mocked):
-            return mocked
-        }
-    }
-    public var name: String? {
-        actualPeripheral.name
-    }
-
-    public var name2: String {
-        actualPeripheral.name2
-    }
-
-    public var asStringIdentifier: String {
-        actualPeripheral.asStringIdentifier
-    }
-}
-
-extension CBPeripheral: PeripheralProtocol, Identifiable {
+extension CBPeripheral: PeripheralProtocol {
     public var name2: String {
         self.name ?? ""
     }
 
     public var asStringIdentifier: String {
         self.identifier.uuidString
-    }
-}
-
-public class MockedPeripheral: PeripheralProtocol, Identifiable {
-    public var name: String?
-
-    public var name2: String {
-        name ?? "unknown-device"
-    }
-
-    public var asStringIdentifier: String {
-        name2
-    }
-
-    public init(name: String) {
-        self.name = name
     }
 }

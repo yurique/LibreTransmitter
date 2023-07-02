@@ -10,25 +10,15 @@ import SwiftUI
 import Combine
 import LibreTransmitter
 import HealthKit
+import LoopKitUI
 
 struct NotificationSettingsView: View {
+    @EnvironmentObject private var displayGlucosePreference: DisplayGlucosePreference
 
     @State private var presentableStatus: StatusMessage?
 
-    private var glucoseUnit: HKUnit
-
     private let glucoseSegments = [HKUnit.millimolesPerLiter, HKUnit.milligramsPerDeciliter]
     private lazy var glucoseSegmentStrings = self.glucoseSegments.map({ $0.localizedShortUnitString })
-
-    public init(glucoseUnit: HKUnit) {
-        if let savedGlucoseUnit = UserDefaults.standard.mmGlucoseUnit {
-            self.glucoseUnit = savedGlucoseUnit
-        } else {
-            self.glucoseUnit = glucoseUnit
-            UserDefaults.standard.mmGlucoseUnit = glucoseUnit
-        }
-
-    }
 
     private enum Key: String {
         // case glucoseSchedules = "com.loopkit.libreglucoseschedules"
@@ -142,6 +132,6 @@ struct NotificationSettingsView: View {
 
 struct NotificationSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        NotificationSettingsView(glucoseUnit: HKUnit.millimolesPerLiter)
+        NotificationSettingsView()
     }
 }

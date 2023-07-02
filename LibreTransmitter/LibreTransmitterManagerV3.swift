@@ -6,7 +6,7 @@
 
 import Foundation
 import LoopKit
-// import LoopKitUI
+import LoopKitUI
 import UIKit
 import UserNotifications
 import Combine
@@ -15,12 +15,14 @@ import CoreBluetooth
 import HealthKit
 import os.log
 
-public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
+open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 
     public typealias GlucoseArrayWithPrediction = (trends: [LibreGlucose], historical: [LibreGlucose], prediction: [LibreGlucose])
     public lazy var logger = Logger(forType: Self.self)
 
     public let isOnboarded = true   // No distinction between created and onboarded
+
+    private var alertsUnitPreference = DisplayGlucosePreference(displayGlucoseUnit: .milligramsPerDeciliter)
 
     public var hasValidSensorSession: Bool {
         lastConnected != nil
@@ -107,9 +109,9 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
             "## LibreTransmitterManager",
             "Testdata: foo",
             "lastConnected: \(String(describing: lastConnected))",
-            "Connection state: \(self.proxy?.connectionStateString)",
-            "Sensor state: \(proxy?.sensorData?.state.description)",
-            "transmitterbattery: \(proxy?.metadata?.batteryString)",
+            "Connection state: \(String(describing: self.proxy?.connectionStateString))",
+            "Sensor state: \(String(describing: proxy?.sensorData?.state.description))",
+            "transmitterbattery: \(String(describing: proxy?.metadata?.batteryString))",
             "SensorData: \(getPersistedSensorDataForDebug())",
             "providesBLEHeartbeat: \(providesBLEHeartbeat)",
             "Metainfo::\n\(AppMetaData.allProperties)",
@@ -117,21 +119,19 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
         ].joined(separator: "\n")
     }
 
-    // public var miaomiaoService: MiaomiaoService
-
     public func fetchNewDataIfNeeded(_ completion: @escaping (CGMReadingResult) -> Void) {
         logger.debug("fetchNewDataIfNeeded called but we don't continue")
 
         completion(.noData)
     }
 
-    internal var lastConnected: Date?
+    public var lastConnected: Date?
 
     public internal(set) var alarmStatus = AlarmStatus()
 
     internal var latestPrediction: LibreGlucose?
 
-    internal var latestBackfill: LibreGlucose? {
+    public var latestBackfill: LibreGlucose? {
         willSet(newValue) {
             guard let newValue else {
                 return
@@ -142,10 +142,11 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
 
             defer {
                 logger.debug("sending glucose notification")
-                NotificationHelper.sendGlucoseNotitifcationIfNeeded(glucose: newValue,
-                                                                    oldValue: oldValue,
-                                                                    trend: trend,
-                                                                    battery: proxy?.metadata?.batteryString ?? "n/a")
+                NotificationHelper.sendGlucoseNotificationIfNeeded(glucose: newValue,
+                                                                   oldValue: oldValue,
+                                                                   trend: trend,
+                                                                   battery: proxy?.metadata?.batteryString ?? "n/a",
+                                                                   glucoseFormatter: alertsUnitPreference.formatter)
 
                 // once we have a new glucose value, we can update the isalarming property
                 if let activeAlarms = UserDefaults.standard.glucoseSchedules?.getActiveAlarms(newValue.glucoseDouble) {
@@ -162,7 +163,7 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
 
             }
 
-            logger.debug("latestBackfill set, newvalue is \(newValue.description)")
+            logger.debug("latestBackfill set, newvalue is \(newValue.glucose)")
 
             if let oldValue {
                 // the idea here is to use the diff between the old and the new glucose to calculate slope and direction, rather than using trend from the glucose value.
@@ -182,7 +183,9 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
 
     }
 
-    public var managerIdentifier = "LibreTransmitterManagerV3"
+    open var managerIdentifier: String {
+        "LibreTransmitterManagerV3"
+    }
 
     public required convenience init?(rawState: CGMManager.RawStateValue) {
 
@@ -195,7 +198,7 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
         [:]
     }
 
-    public let localizedTitle = LocalizedString("Libre Bluetooth", comment: "Title for the CGMManager option")
+    open var localizedTitle: String { "FreeStyle Libre" }
 
     public let appURL: URL? = nil // URL(string: "spikeapp://")
 
@@ -204,13 +207,19 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
         UserDefaults.standard.mmSyncToNs
     }
 
-    public init() {
+    public required init() {
         lastConnected = nil
 
         logger.debug("LibreTransmitterManager will be created now")
         NotificationHelper.requestNotificationPermissionsIfNeeded()
-        
-        proxy?.delegate = self
+
+        if isDeviceSelected {
+            establishProxy()
+        }
+    }
+
+    var isDeviceSelected: Bool {
+        return UserDefaults.standard.preSelectedDevice != nil || UserDefaults.standard.preSelectedUid != nil || SelectionState.shared.selectedUID != nil
     }
     
     public func resetManager() {
@@ -232,12 +241,11 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
         lastDirectUpdate = nil
     }
     
-    public func reEstablishProxy() {
-        logger.debug("LibreTransmitterManager re-establish called")
+    open func establishProxy() {
+        logger.debug("LibreTransmitterManager establishProxy called")
 
         proxy = LibreTransmitterProxyManager()
         proxy?.delegate = self
-        
     }
 
     deinit {
@@ -246,8 +254,7 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
         disconnect()
     }
 
-    // lazy because we don't want to scan immediately
-    public lazy var proxy: LibreTransmitterProxyManager? = LibreTransmitterProxyManager()
+    public var proxy: LibreTransmitterProxyManager?
 
     /*
      These properties are mostly useful for swiftui
@@ -255,14 +262,6 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
     public var transmitterInfoObservable = TransmitterInfo()
     public var sensorInfoObservable = SensorInfo()
     public var glucoseInfoObservable = GlucoseInfo()
-
-    var longDateFormatter: DateFormatter = ({
-        let df = DateFormatter()
-        df.dateStyle = .long
-        df.timeStyle = .long
-        df.doesRelativeDateFormatting = true
-        return df
-    })()
 
     var dateFormatter: DateFormatter = ({
         let df = DateFormatter()
@@ -276,8 +275,14 @@ public final class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelega
     var lastDirectUpdate: Date?
 
     internal var countTimesWithoutData: Int = 0
-    
 
+    open var pairingService: SensorPairingProtocol {
+        return SensorPairingService()
+    }
+
+    open var bluetoothSearcher: BluetoothSearcher {
+        return BluetoothSearchManager()
+    }
 }
 
 // MARK: - Convenience functions
@@ -298,16 +303,16 @@ extension LibreTransmitterManagerV3 {
         if let predicted = allGlucoses.predictBloodSugar(glucosePredictionMinutes) {
             let currentBg = predicted.calibratedGlucose(calibrationInfo: calibration)
             let bgDate = predicted.date.addingTimeInterval(60 * -glucosePredictionMinutes)
-            return LibreGlucose(unsmoothedGlucose: currentBg, glucoseDouble: currentBg, timestamp: bgDate)
             logger.debug("Predicted glucose (not used) was: \(currentBg)")
+            return LibreGlucose(unsmoothedGlucose: currentBg, glucoseDouble: currentBg, timestamp: bgDate)
         } else {
-            return nil
             logger.debug("Tried to predict glucose value but failed!")
+            return nil
         }
 
     }
 
-    func setObservables(sensorData: SensorData?, bleData: Libre2.LibreBLEResponse?, metaData: LibreTransmitterMetadata?) {
+    public func setObservables(sensorData: SensorDataProtocol?, bleData: Libre2.LibreBLEResponse?, metaData: LibreTransmitterMetadata?) {
         logger.debug("setObservables called")
         DispatchQueue.main.async {
 
@@ -418,45 +423,21 @@ extension LibreTransmitterManagerV3 {
 
             }
 
-            let formatter = QuantityFormatter()
-            let preferredUnit = UserDefaults.standard.mmGlucoseUnit ?? .millimolesPerLiter
-
             if let d = self.latestBackfill {
                 self.logger.debug("will set glucoseInfoObservable")
-
-                formatter.setPreferredNumberFormatter(for: .millimolesPerLiter)
-                self.glucoseInfoObservable.glucoseMMOL = formatter.string(from: d.quantity, for: .millimolesPerLiter) ?? "-"
-
-                formatter.setPreferredNumberFormatter(for: .milligramsPerDeciliter)
-                self.glucoseInfoObservable.glucoseMGDL = formatter.string(from: d.quantity, for: .milligramsPerDeciliter) ?? "-"
-
-                // backward compat
-                if preferredUnit == .millimolesPerLiter {
-                    self.glucoseInfoObservable.glucose = self.glucoseInfoObservable.glucoseMMOL
-                } else if preferredUnit == .milligramsPerDeciliter {
-                    self.glucoseInfoObservable.glucose = self.glucoseInfoObservable.glucoseMGDL
-                }
-
-                self.glucoseInfoObservable.date = self.longDateFormatter.string(from: d.timestamp)
+                self.glucoseInfoObservable.glucose = d.quantity
+                self.glucoseInfoObservable.date = d.timestamp
             }
 
             if let d = self.latestPrediction {
-                formatter.setPreferredNumberFormatter(for: .millimolesPerLiter)
-                self.glucoseInfoObservable.predictionMMOL = formatter.string(from: d.quantity, for: .millimolesPerLiter) ?? "-"
-
-                formatter.setPreferredNumberFormatter(for: .milligramsPerDeciliter)
-                self.glucoseInfoObservable.predictionMGDL = formatter.string(from: d.quantity, for: .milligramsPerDeciliter) ?? "-"
-                self.glucoseInfoObservable.predictionDate = self.longDateFormatter.string(from: d.timestamp)
+                self.glucoseInfoObservable.prediction = d.quantity
+                self.glucoseInfoObservable.predictionDate = d.timestamp
 
             } else {
-                self.glucoseInfoObservable.predictionMMOL = ""
-                self.glucoseInfoObservable.predictionMGDL = ""
-                self.glucoseInfoObservable.predictionDate = ""
-
+                self.glucoseInfoObservable.prediction = nil
+                self.glucoseInfoObservable.predictionDate = nil
             }
-
         }
-
     }
 
     func getStartDateForFilter() -> Date? {
@@ -492,22 +473,20 @@ extension LibreTransmitterManagerV3 {
         }
         logger.debug("tried creating trendarrow using \(glucoses.count) elements for trend calc")
         
-        return
-        glucoses
-        .filterDateRange(startDate, nil)
-        .compactMap {
-            return NewGlucoseSample(
-                date: $0.startDate,
-                quantity: $0.quantity,
-                condition: nil,
-                trend: trend,
-                trendRate: nil,
-                isDisplayOnly: false,
-                wasUserEntered: false,
-                syncIdentifier: $0.syncId,
-                device: self.proxy?.device)
-        }
-
+        return glucoses
+            .filterDateRange(startDate, nil)
+            .compactMap {
+                return NewGlucoseSample(
+                    date: $0.startDate,
+                    quantity: $0.quantity,
+                    condition: nil,
+                    trend: trend,
+                    trendRate: nil,
+                    isDisplayOnly: false,
+                    wasUserEntered: false,
+                    syncIdentifier: $0.syncId,
+                    device: self.proxy?.device)
+            }
     }
 
     public var calibrationData: SensorData.CalibrationInfo? {
@@ -516,5 +495,12 @@ extension LibreTransmitterManagerV3 {
     
     public func getSmallImage() -> UIImage {
         proxy?.activePluginType?.smallImage ?? UIImage(named: "libresensor", in: Bundle.current, compatibleWith: nil)!
+    }
+}
+
+
+extension LibreTransmitterManagerV3: DisplayGlucoseUnitObserver {
+    public func unitDidChange(to displayGlucoseUnit: HKUnit) {
+        self.alertsUnitPreference.unitDidChange(to: displayGlucoseUnit)
     }
 }

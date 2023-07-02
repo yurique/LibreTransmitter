@@ -23,7 +23,6 @@ extension MeasurementProtocol {
         // add extraslope and extraoffset as indicated by user in the ui
         round(glucoseValueFromRaw(calibrationInfo: calibrationInfo)) * calibrationInfo.extraSlope + calibrationInfo.extraOffset
     }
-    
 }
 
 public enum MeasurementError: Int, CaseIterable, Codable {

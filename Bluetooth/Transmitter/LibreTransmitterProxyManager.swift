@@ -449,28 +449,15 @@ public final class LibreTransmitterProxyManager: NSObject, CBCentralManagerDeleg
         var foundUUID = manufacturerData.subdata(in: 2..<8)
         foundUUID.append(contentsOf: [0x07, 0xe0])
         
-        logger.debug("ManufacturerData: \(manufacturerData), found uid: \(foundUUID)")
+        logger.debug("ManufacturerData: \(manufacturerData.hex), found uid: \(foundUUID.hex)")
 
         guard foundUUID == selectedUid && Libre2DirectTransmitter.canSupportPeripheral(peripheral) else {
             return false
         }
         
-        
-        
         return true
     }
     
-    private func verifyLibre2ByName(peripheral: CBPeripheral, name: String) -> Bool {
-        
-        // This method is not as robust, and should only be used in cases where manufacturerdata is not available, such as when using the tzachi-dar simulator
-        guard  peripheral.name?.contains(name) == true else {
-            return false
-        }
-        return Libre2DirectTransmitter.canSupportPeripheral(peripheral)
-        
-        
-    }
-
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
         dispatchPrecondition(condition: .onQueue(managerQueue))
 
@@ -488,22 +475,10 @@ public final class LibreTransmitterProxyManager: NSObject, CBCentralManagerDeleg
              logger.debug("preselected sensor is: \(String(describing:sensor))")
              
              
-             if let sensor = UserDefaults.standard.preSelectedSensor, let name = sensor.sensorName, sensor.initialIdentificationStrategy == .byFakeSensorName {
-                 logger.debug("Verifiying libre2 connection using sensor name")
-                 if !verifyLibre2ByName(peripheral: peripheral, name: name) {
-                     logger.debug("failed Verifiying libre2 connection using sensor name")
-                     return
-                 }
-                 
-             } else {
-                 logger.debug("Verifiying libre2 connection using manufacturerData")
-                 if !verifyLibre2ManufacturerData(peripheral: peripheral, selectedUid: selectedUid, advertisementData: advertisementData) {
-                     logger.debug("failed Verifiying libre2 connection using manufacturerData")
-                     return
-                 }
+             if !verifyLibre2ManufacturerData(peripheral: peripheral, selectedUid: selectedUid, advertisementData: advertisementData) {
+                 logger.debug("failed Verifiying libre2 connection using manufacturerData")
+                 return
              }
-             
-            
 
             // next time we search via bluetooth, let's identify the sensor with its bluetooth identifier
             UserDefaults.standard.preSelectedUid = nil

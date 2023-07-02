@@ -272,12 +272,6 @@ public extension Libre2 {
     }
 }
 
-extension UInt16 {
-    init(_ byte0: UInt8, _ byte1: UInt8) {
-        self = Data([byte1, byte0]).withUnsafeBytes { $0.load(as: UInt16.self) }
-    }
-}
-
 extension Libre2 {
     enum Example {
         static let sensorInfo: [UInt8] = [

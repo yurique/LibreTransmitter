@@ -15,7 +15,7 @@ public protocol LibreTransmitterProxyProtocol: AnyObject {
     static var manufacturerer: String { get }
     static var requiresPhoneNFC: Bool { get }
     static var requiresSetup: Bool { get }
-    static func canSupportPeripheral(_ peripheral: CBPeripheral) -> Bool
+    static func canSupportPeripheral(_ peripheral: PeripheralProtocol) -> Bool
 
     static var writeCharacteristic: UUIDContainer? { get set }
     static var notifyCharacteristic: UUIDContainer? { get set }
@@ -36,7 +36,7 @@ public protocol LibreTransmitterProxyProtocol: AnyObject {
 }
 
 extension LibreTransmitterProxyProtocol {
-    func canSupportPeripheral(_ peripheral: CBPeripheral) -> Bool {
+    func canSupportPeripheral(_ peripheral: PeripheralProtocol) -> Bool {
         Self.canSupportPeripheral(peripheral)
     }
     public var staticType: LibreTransmitterProxyProtocol.Type {
@@ -78,7 +78,7 @@ public enum LibreTransmitters {
         getSupportedPlugins(peripheral)?.isEmpty == false
     }
 
-    public static func getSupportedPlugins(_ peripheral: CBPeripheral) -> [LibreTransmitterProxyProtocol.Type]? {
+    public static func getSupportedPlugins(_ peripheral: PeripheralProtocol) -> [LibreTransmitterProxyProtocol.Type]? {
         all.enumerated().compactMap {
             $0.element.canSupportPeripheral(peripheral) ? $0.element : nil
         }

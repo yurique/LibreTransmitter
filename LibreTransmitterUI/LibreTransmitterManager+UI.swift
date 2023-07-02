@@ -24,12 +24,15 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
         nil
     }
 
-    public static func setupViewController(bluetoothProvider: BluetoothProvider, displayGlucoseUnitObservable: DisplayGlucoseUnitObservable, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool) -> SetupUIResult<CGMManagerViewController, CGMManagerUI> {
+    public static func setupViewController(bluetoothProvider: BluetoothProvider, displayGlucosePreference: DisplayGlucosePreference, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool, prefersToSkipUserInteraction: Bool) -> SetupUIResult<CGMManagerViewController, CGMManagerUI>
+    {
+        let cgmManager = self.init()
+        let vc = LibreTransmitterSetupViewController(displayGlucosePreference: displayGlucosePreference, cgmManager: cgmManager)
 
-            return .userInteractionRequired(LibreTransmitterSetupViewController())
+        return .userInteractionRequired(vc)
     }
 
-    public func settingsViewController(bluetoothProvider: BluetoothProvider, displayGlucoseUnitObservable: DisplayGlucoseUnitObservable, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool) -> CGMManagerViewController {
+    public func settingsViewController(bluetoothProvider: BluetoothProvider, displayGlucosePreference: DisplayGlucosePreference, colorPalette: LoopUIColorPalette, allowDebugFeatures: Bool) -> CGMManagerViewController {
 
         let doneNotifier = GenericObservableObject()
         let wantToTerminateNotifier = GenericObservableObject()
@@ -38,16 +41,26 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
         
         let wantToRestablishConnectionNotifier = GenericObservableObject()
 
-        let settings = SettingsView.asHostedViewController(
-            displayGlucoseUnitObservable: displayGlucoseUnitObservable,
-            notifyComplete: doneNotifier, notifyDelete: wantToTerminateNotifier,
-            notifyReset: wantToResetCGMManagerNotifier, notifyReconnect:wantToRestablishConnectionNotifier,
-            transmitterInfoObservable: self.transmitterInfoObservable,
-            sensorInfoObervable: self.sensorInfoObservable,
-            glucoseInfoObservable: self.glucoseInfoObservable,
-            alarmStatus: self.alarmStatus)
+        let settingsView = SettingsView(
+            transmitterInfo: self.transmitterInfoObservable,
+            sensorInfo: self.sensorInfoObservable,
+            glucoseMeasurement: self.glucoseInfoObservable,
+            notifyComplete: doneNotifier,
+            notifyDelete: wantToTerminateNotifier,
+            notifyReset: wantToResetCGMManagerNotifier,
+            notifyReconnect:wantToRestablishConnectionNotifier,
+            alarmStatus: self.alarmStatus,
+            pairingService: self.pairingService,
+            bluetoothSearcher: self.bluetoothSearcher
+        )
 
-        let nav = CGMManagerSettingsNavigationViewController(rootViewController: settings)
+        let hostedView = DismissibleHostingController(
+            rootView: settingsView
+                .navigationTitle(self.localizedTitle)
+                .environmentObject(displayGlucosePreference)
+        )
+
+        let nav = CGMManagerSettingsNavigationViewController(rootViewController: hostedView)
         nav.navigationItem.largeTitleDisplayMode = .always
         nav.navigationBar.prefersLargeTitles = true
         
@@ -59,7 +72,7 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
         
         wantToRestablishConnectionNotifier.listenOnce { [weak self, weak nav] in
             self?.logger.debug("CGM wants to RestablishConnection")
-            self?.reEstablishProxy()
+            self?.establishProxy()
             nav?.notifyComplete()
         }
         

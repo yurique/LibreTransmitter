@@ -19,19 +19,20 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
 
     fileprivate lazy var logger = Logger(forType: Self.self)
 
-    lazy var cgmManager: LibreTransmitterManagerV3? =  LibreTransmitterManagerV3()
+    var cgmManager: LibreTransmitterManagerV3
 
-    var modeSelection: UIHostingController<ModeSelectionView>!
-
-    init() {
+    init(displayGlucosePreference: DisplayGlucosePreference, cgmManager: LibreTransmitterManagerV3) {
         SelectionState.shared.selectedStringIdentifier = UserDefaults.standard.preSelectedDevice
+
+        self.cgmManager = cgmManager
 
         let cancelNotifier = GenericObservableObject()
         let saveNotifier = GenericObservableObject()
 
-        modeSelection = UIHostingController(rootView: ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier))
+        let myView = ModeSelectionView(cancelNotifier: cancelNotifier, saveNotifier: saveNotifier, pairingService: cgmManager.pairingService, bluetoothSearcher: cgmManager.bluetoothSearcher)
+            .environmentObject(displayGlucosePreference)
 
-        super.init(rootViewController: modeSelection)
+        super.init(rootViewController: UIHostingController(rootView: myView))
 
         cancelNotifier.listenOnce { [weak self] in
             self?.cancel()
@@ -41,10 +42,6 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
             self?.save()
         }
 
-    }
-
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
     deinit {
@@ -76,7 +73,7 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
         } else if let newUID = SelectionState.shared.selectedUID {
             // this one is only temporary,
             // as we don't know the bluetooth identifier during nfc setup
-            logger.debug("Setupcontroller will set new libre2 device  to \(newUID)")
+            logger.debug("Setupcontroller will set new libre2 device to \(newUID.hex)")
 
             UserDefaults.standard.preSelectedUid = newUID
             SelectionState.shared.selectedUID = nil
@@ -88,14 +85,12 @@ class LibreTransmitterSetupViewController: UINavigationController, CGMManagerOnb
             // stored both preSelectedDevice and selectedUID !
         }
 
-        if let cgmManager {
-            logger.debug("Setupcontroller Saving from setup")
-            cgmManagerOnboardingDelegate?.cgmManagerOnboarding(didCreateCGMManager: cgmManager)
-            cgmManagerOnboardingDelegate?.cgmManagerOnboarding(didOnboardCGMManager: cgmManager)
 
-        } else {
-            logger.debug("Setupcontroller not Saving from setup")
-        }
+        cgmManager.establishProxy()
+
+        logger.debug("Setupcontroller Saving from setup")
+        cgmManagerOnboardingDelegate?.cgmManagerOnboarding(didCreateCGMManager: cgmManager)
+        cgmManagerOnboardingDelegate?.cgmManagerOnboarding(didOnboardCGMManager: cgmManager)
 
         completionDelegate?.completionNotifyingDidComplete(self)
     }

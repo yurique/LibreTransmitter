@@ -15,6 +15,7 @@ import LoopKitUI
 import UniformTypeIdentifiers
 
 public struct SettingsItem: View {
+
     @State var title: String = "" // we don't want this to change after it is set
     @Binding var detail: String
 
@@ -47,8 +48,16 @@ public struct SettingsItem: View {
 }
 
 struct SettingsView: View {
+    @EnvironmentObject private var displayGlucosePreference: DisplayGlucosePreference
 
-    @ObservedObject private var displayGlucoseUnitObservable: DisplayGlucoseUnitObservable
+    var longDateFormatter: DateFormatter = ({
+        let df = DateFormatter()
+        df.dateStyle = .long
+        df.timeStyle = .long
+        df.doesRelativeDateFormatting = true
+        return df
+    })()
+
     @ObservedObject private var transmitterInfo: LibreTransmitter.TransmitterInfo
     @ObservedObject private var sensorInfo: LibreTransmitter.SensorInfo
 
@@ -58,7 +67,7 @@ struct SettingsView: View {
     @ObservedObject private var notifyDelete: GenericObservableObject
     @ObservedObject private var notifyReset: GenericObservableObject
     @ObservedObject private var notifyReconnect: GenericObservableObject
-   
+
     @State private var presentableStatus: StatusMessage?
     @ObservedObject var alarmStatus: LibreTransmitter.AlarmStatus
 
@@ -66,32 +75,35 @@ struct SettingsView: View {
     // @State private var showingExporter = false
     // @Environment(\.presentationMode) var presentationMode
 
-    static func asHostedViewController(
-        displayGlucoseUnitObservable: DisplayGlucoseUnitObservable,
+    var pairingService: SensorPairingProtocol
+    var bluetoothSearcher: BluetoothSearcher
+
+    init(
+        transmitterInfo: LibreTransmitter.TransmitterInfo,
+        sensorInfo: LibreTransmitter.SensorInfo,
+        glucoseMeasurement: LibreTransmitter.GlucoseInfo,
         notifyComplete: GenericObservableObject,
         notifyDelete: GenericObservableObject,
         notifyReset: GenericObservableObject,
         notifyReconnect: GenericObservableObject,
-        transmitterInfoObservable: LibreTransmitter.TransmitterInfo,
-        sensorInfoObervable: LibreTransmitter.SensorInfo,
-        glucoseInfoObservable: LibreTransmitter.GlucoseInfo,
-        alarmStatus: LibreTransmitter.AlarmStatus) -> DismissibleHostingController {
-            DismissibleHostingController(rootView: self.init(
-            displayGlucoseUnitObservable: displayGlucoseUnitObservable,
-            transmitterInfo: transmitterInfoObservable,
-            sensorInfo: sensorInfoObervable,
-            glucoseMeasurement: glucoseInfoObservable,
-            notifyComplete: notifyComplete,
-            notifyDelete: notifyDelete,
-            notifyReset: notifyReset,
-            notifyReconnect: notifyReconnect,
-            alarmStatus: alarmStatus
-
-        ))
+        alarmStatus: LibreTransmitter.AlarmStatus,
+        pairingService: SensorPairingProtocol,
+        bluetoothSearcher: BluetoothSearcher)
+    {
+        self.transmitterInfo = transmitterInfo
+        self.sensorInfo = sensorInfo
+        self.glucoseMeasurement = glucoseMeasurement
+        self.notifyComplete = notifyComplete
+        self.notifyDelete = notifyDelete
+        self.notifyReset = notifyReset
+        self.notifyReconnect = notifyReconnect
+        self.alarmStatus = alarmStatus
+        self.pairingService = pairingService
+        self.bluetoothSearcher = bluetoothSearcher
     }
 
     private var glucoseUnit: HKUnit {
-        displayGlucoseUnitObservable.displayGlucoseUnit
+        displayGlucosePreference.unit
     }
 
     static let formatter = NumberFormatter()
@@ -104,8 +116,11 @@ struct SettingsView: View {
                 headerSection
                 snoozeSection
                 measurementSection
-                if !glucoseMeasurement.predictionDate.isEmpty {
-                    predictionSection
+                if let date = glucoseMeasurement.predictionDate, let prediction = glucoseMeasurement.prediction {
+                    Section(header: Text(LocalizedString("Last Blood Sugar prediction", comment: "Text describing header for Blood Sugar prediction section"))) {
+                        SettingsItem(title: "CurrentBG", detail: displayGlucosePreference.format(prediction))
+                        SettingsItem(title: "Date", detail: longDateFormatter.string(from: date) )
+                    }
                 }
                 
                 NavigationLink(destination: deviceInfoSection) {
@@ -122,19 +137,11 @@ struct SettingsView: View {
                 destructSection
                 
             }.listStyle(InsetGroupedListStyle())
-            .onAppear {
-                // only override savedglucose unit if we haven't saved this locally before
-                if UserDefaults.standard.mmGlucoseUnit == nil {
-                    UserDefaults.standard.mmGlucoseUnit = glucoseUnit
-                }
-                
-            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     doneButton
                 }
             }
-            .navigationTitle("Libre Bluetooth")
     }
 
     var snoozeSection: some View {
@@ -151,28 +158,19 @@ struct SettingsView: View {
     }
 
     var measurementSection : some View {
-        Section(header: Text(LocalizedString("Last measurement", comment: "Text describing header for last measurement section"))) {
-            if glucoseUnit == .millimolesPerLiter {
-                    SettingsItem(title: "Glucose", detail: $glucoseMeasurement.glucoseMMOL)
-            } else if glucoseUnit == .milligramsPerDeciliter {
-                    SettingsItem(title: "Glucose", detail: $glucoseMeasurement.glucoseMGDL)
-            }
-
-            SettingsItem(title: "Date", detail: $glucoseMeasurement.date )
-            SettingsItem(title: "Sensor Footer checksum", detail: $glucoseMeasurement.checksum )
+        var glucoseText: String = ""
+        var glucoseDateText: String = ""
+        if let glucose = glucoseMeasurement.glucose {
+            glucoseText = displayGlucosePreference.format(glucose)
         }
-    }
+        if let date = glucoseMeasurement.date {
+            glucoseDateText = longDateFormatter.string(from: date)
+        }
 
-    var predictionSection : some View {
-        Section(header: Text(LocalizedString("Last Blood Sugar prediction", comment: "Text describing header for Blood Sugar prediction section"))) {
-            if glucoseUnit == .millimolesPerLiter {
-                    SettingsItem(title: "CurrentBG", detail: $glucoseMeasurement.predictionMMOL)
-            } else if glucoseUnit == .milligramsPerDeciliter {
-                    SettingsItem(title: "CurrentBG", detail: $glucoseMeasurement.predictionMGDL)
-            }
-
-            SettingsItem(title: "Date", detail: $glucoseMeasurement.predictionDate )
-
+        return Section(header: Text(LocalizedString("Last measurement", comment: "Text describing header for last measurement section"))) {
+            SettingsItem(title: "Glucose", detail: glucoseText)
+            SettingsItem(title: "Date", detail: glucoseDateText )
+            SettingsItem(title: "Sensor Footer checksum", detail: $glucoseMeasurement.checksum )
         }
     }
 
@@ -223,7 +221,7 @@ struct SettingsView: View {
     var sensorChangeSection: some View {
         
         Section {
-            NavigationLink(destination: AuthView(completeNotifier: notifyComplete, notifyReset: notifyReset, notifyReconnect: notifyReconnect)) {
+            NavigationLink(destination: AuthView(completeNotifier: notifyComplete, notifyReset: notifyReset, notifyReconnect: notifyReconnect, pairingService: pairingService, bluetoothSearcher: bluetoothSearcher)) {
                 /*Button("Change Sensor") {
                 }.foregroundColor(.blue)*/
                 SettingsItem(title: "Change Sensor").foregroundColor(.blue)
@@ -245,7 +243,9 @@ struct SettingsView: View {
                         self.authenticate { success in
                             print("got authentication response: \(success)")
                             if success {
-                                notifyDelete.notify()
+                                DispatchQueue.main.async {
+                                    notifyDelete.notify()
+                                }
                             }
                         }
                         
@@ -271,11 +271,11 @@ struct SettingsView: View {
                 }
             }
             
-            NavigationLink(destination: GlucoseSettingsView(glucoseUnit: self.glucoseUnit)) {
+            NavigationLink(destination: GlucoseSettingsView()) {
                 SettingsItem(title: "Glucose Settings")
             }
         
-            NavigationLink(destination: NotificationSettingsView(glucoseUnit: self.glucoseUnit)) {
+            NavigationLink(destination: NotificationSettingsView()) {
                 SettingsItem(title: "Notifications")
             }
 
@@ -324,7 +324,7 @@ struct SettingsView: View {
     
     var showProgress : Bool {
         
-        if let expiresAt = sensorInfo.expiresAt,let activatedAt = sensorInfo.activatedAt {
+        if let expiresAt = sensorInfo.expiresAt {
             return expiresAt.timeIntervalSinceNow > 0
         }
         
@@ -463,6 +463,6 @@ struct SettingsView: View {
 
 struct SettingsOverview_Previews: PreviewProvider {
     static var previews: some View {
-        NotificationSettingsView(glucoseUnit: HKUnit.millimolesPerLiter)
+        NotificationSettingsView()
     }
 }

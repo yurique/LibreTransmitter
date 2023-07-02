@@ -12,52 +12,37 @@ import LoopKitUI
 import LoopKit
 import os.log
 
-#if canImport(CoreNFC)
-
 fileprivate var logger = Logger(forType: "Libre2DirectSetup")
 
 struct Libre2DirectSetup: View {
 
     @State private var presentableStatus: StatusMessage?
     @State private var showPairingInfo = false
-
-    @State private var service = SensorPairingService()
-
+    @State private var isPairing = false
     @State private var pairingInfo = SensorPairingInfo()
 
     @ObservedObject public var cancelNotifier: GenericObservableObject
     @ObservedObject public var saveNotifier: GenericObservableObject
     
-    public var isMockedSensor = false
-    
-    
-    func pairMockedSensor() {
-        let info = FakeSensorPairingData().fakeSensorPairingInfo()
-        logger.debug("Sending fake sensor pairinginfo: \(info.description)")
-        //delay a bit to simulate a real tag readout
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            receivePairingInfo(info)
-        }
-        
-        
-    }
+    let pairingService: SensorPairingProtocol
 
     func pairSensor() {
-        
-        guard !isMockedSensor else {
-            pairMockedSensor()
-            return
+
+        pairingService.onCancel = {
+            DispatchQueue.main.async {
+                isPairing = false
+            }
         }
         
-        if !Features.phoneNFCAvailable {
-            presentableStatus = StatusMessage(title: "Phone NFC required!", message: "Your phone or app is not enabled for NFC communications, which is needed to pair to libre2 sensors")
-            return
-        }
-        print("Asked to pair sensor! phoneNFCAvailable: \(Features.phoneNFCAvailable)")
         showPairingInfo = false
+        isPairing = true
 
-        service.pairSensor()
-
+        do {
+            try pairingService.pairSensor()
+        } catch {
+            let message = (error as? LocalizedError)?.recoverySuggestion ?? error.localizedDescription
+            presentableStatus = StatusMessage(title: error.localizedDescription, message: message)
+        }
     }
     
     func receivePairingInfo(_ info: SensorPairingInfo) {
@@ -66,6 +51,7 @@ struct Libre2DirectSetup: View {
 
         pairingInfo = info
 
+        isPairing = false
         showPairingInfo = true
 
         // calibrationdata must always be extracted from the full nfc scan
@@ -87,7 +73,7 @@ struct Libre2DirectSetup: View {
 
         let max = info.sensorData?.maxMinutesWearTime ?? 0
 
-        let sensor = Sensor(uuid: info.uuid, patchInfo: info.patchInfo, maxAge: max, initialIdentificationStrategy: info.initialIdentificationStrategy, sensorName: info.sensorName)
+        let sensor = Sensor(uuid: info.uuid, patchInfo: info.patchInfo, maxAge: max, sensorName: info.sensorName)
         UserDefaults.standard.preSelectedSensor = sensor
 
         SelectionState.shared.selectedUID = pairingInfo.uuid
@@ -95,9 +81,9 @@ struct Libre2DirectSetup: View {
         // only relevant for launch through settings, as selectionstate can be persisted
         // we need to enforce libre2 by removing any selected third party transmitter
         SelectionState.shared.selectedStringIdentifier = nil
-        print(" paried and set selected UID to: \(SelectionState.shared.selectedUID?.hex)")
+        print("Paired and set selected UID to: \(String(describing: SelectionState.shared.selectedUID?.hex))")
         saveNotifier.notify()
-        NotificationHelper.sendLibre2FirectFinishedSetupNotifcation()
+        NotificationHelper.sendLibre2DirectFinishedSetupNotifcation()
 
     }
 
@@ -127,17 +113,26 @@ struct Libre2DirectSetup: View {
 
         }) {
             VStack(spacing: 10) {
-                Button("Pair Sensor & connect") {
+                Button {
                     pairSensor()
+                } label: {
+                    if isPairing {
+                        HStack(spacing: 10) {
+                            ProgressView()
+                            Text(LocalizedString("Pairing...", comment: "Button title for pairing sensor when pairing"))
+                        }
+                    } else {
+                        Text(LocalizedString("Pair Sensor", comment: "Button title for pairing sensor"))
+                    }
                 }
                 .actionButtonStyle(.primary)
+                .disabled(isPairing)
             }.padding()
         }
         .navigationTitle("Libre 2 Setup")
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: cancelButton)  // the pair button does the save process for us! //, trailing: saveButton)
-        .onReceive(service.publisher, perform: receivePairingInfo)
-        //.onReceive(service.errorPublisher, perform: receiveError)
+        .onReceive(pairingService.publisher, perform: receivePairingInfo)
         .alert(item: $presentableStatus) { status in
             Alert(title: Text(status.title), message: Text(status.message), dismissButton: .default(Text("Got it!")))
         
@@ -147,7 +142,6 @@ struct Libre2DirectSetup: View {
 
 struct Libre2DirectSetup_Previews: PreviewProvider {
     static var previews: some View {
-        Libre2DirectSetup(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject())
+        Libre2DirectSetup(cancelNotifier: GenericObservableObject(), saveNotifier: GenericObservableObject(), pairingService: MockSensorPairingService())
     }
 }
-#endif

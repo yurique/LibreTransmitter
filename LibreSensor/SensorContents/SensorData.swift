@@ -8,9 +8,44 @@
 
 import Foundation
 
+public protocol SensorDataProtocol {
+    var minutesSinceStart: Int { get }
+    var maxMinutesWearTime: Int { get }
+    var state: SensorState { get }
+    var serialNumber: String { get }
+    var footerCrc: UInt16 { get }
+    var date: Date { get }
+}
+
+public extension SensorDataProtocol {
+    var humanReadableSensorAge: String {
+        let days = TimeInterval(minutesSinceStart * 60).days
+        return String(format: "%.2f", days) + " day(s)"
+    }
+
+    var humanReadableTimeLeft: String {
+        let days = TimeInterval(minutesLeft * 60).days
+        return String(format: "%.2f", days) + " day(s)"
+    }
+
+    // the amount of minutes left before this sensor expires
+    var minutesLeft: Int {
+       maxMinutesWearTime - minutesSinceStart
+    }
+
+    // once the sensor has ended we don't know the exact date anymore
+    var sensorEndTime: Date? {
+        if minutesLeft <= 0 {
+            return nil
+        }
+
+        return self.date.addingTimeInterval(TimeInterval(minutes: Double(self.minutesLeft)))
+    }
+}
+
 /// Structure for data from Freestyle Libre sensor
 /// To be initialized with the bytes as read via nfc. Provides all derived data.
-public struct SensorData: Codable {
+public struct SensorData: Codable, SensorDataProtocol {
     /// Parameters for the temperature compensation algorithm
     // let temperatureAlgorithmParameterSet: TemperatureAlgorithmParameters?
 
@@ -21,7 +56,7 @@ public struct SensorData: Codable {
     /// The uid of the sensor
     let uuid: Data
     /// The serial number of the sensor
-    var serialNumber: String {
+    public var serialNumber: String {
         guard let patchInfo,
               patchInfo.count >= 6,
               let family = SensorFamily(rawValue: Int(patchInfo[2] >> 4))
@@ -48,7 +83,7 @@ public struct SensorData: Codable {
         Array(bytes[footerRange])
     }
     /// Date when data was read from sensor
-    let date: Date
+    public let date: Date
     /// Minutes (approx) since start of sensor
     public var minutesSinceStart: Int {
         Int(body[293]) << 8 + Int(body[292])
@@ -82,26 +117,12 @@ public struct SensorData: Codable {
         Crc.hasValidCrc16InFirstTwoBytes(footer)
     }
     /// Footer crc needed for checking integrity of SwiftLibreOOPWeb response
-    var footerCrc: UInt16 {
+    public var footerCrc: UInt16 {
         Crc.crc16(Array(footer.dropFirst(2)), seed: 0xffff)
     }
 
-    // the amount of minutes left before this sensor expires
-    public var minutesLeft: Int {
-       maxMinutesWearTime - minutesSinceStart
-    }
-
-    // once the sensor has ended we don't know the exact date anymore
-    var sensorEndTime: Date? {
-        if minutesLeft <= 0 {
-            return nil
-        }
-
-        return self.date.addingTimeInterval(TimeInterval(minutes: Double(self.minutesLeft)))
-    }
-
     /// Sensor state (ready, failure, starting etc.)
-    var state: SensorState {
+    public var state: SensorState {
         SensorState(stateByte: header[4])
     }
 
@@ -230,18 +251,6 @@ public struct SensorData: Codable {
     // strictly only needed for decryption and calculating serial numbers properly
     public var patchInfo : Data?
     
-    fileprivate let aday = 86_400.0 // in seconds
-
-    var humanReadableSensorAge: String {
-        let days = TimeInterval(minutesSinceStart * 60) / aday
-        return String(format: "%.2f", days) + " day(s)"
-    }
-
-    var humanReadableTimeLeft: String {
-        let days = TimeInterval(minutesLeft * 60) / aday
-        return String(format: "%.2f", days) + " day(s)"
-    }
-
     var toJson: String {
         "[" + self.bytes.map { String(format: "0x%02x", $0) }.joined(separator: ", ") + "]"
     }

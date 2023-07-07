@@ -26,10 +26,8 @@ public enum NotificationHelper {
         case lowBattery = "com.loopkit.libremiaomiao.lowbattery-notification"
         case sensorExpire = "com.loopkit.libremiaomiao.SensorExpire-notification"
         case noBridgeSelected = "com.loopkit.libremiaomiao.noBridgeSelected-notification"
-        case bluetoothPoweredOff = "com.loopkit.libremiaomiao.bluetoothPoweredOff-notification"
         case invalidChecksum = "com.loopkit.libremiaomiao.invalidChecksum-notification"
         case calibrationOngoing = "com.loopkit.libremiaomiao.calibration-notification"
-        case restoredState = "com.loopkit.libremiaomiao.state-notification"
         case libre2directFinishedSetup = "com.loopkit.libremiaomiao.libre2direct-notification"
     }
     
@@ -307,29 +305,7 @@ public extension NotificationHelper {
 
 // MARK: - Notification sendout
 public extension NotificationHelper {
-    static func sendRestoredStateNotification(msg: String) {
-        ensureCanSendNotification {
-            logger.debug("\(#function) sending RestoredStateNotification")
-
-            let content = UNMutableNotificationContent()
-            content.title = "State was restored"
-            content.body = msg
-
-            addRequest(identifier: .restoredState, content: content, deleteOld: true )
-        }
-    }
-
-    static func sendBluetoothPowerOffNotification() {
-        ensureCanSendNotification {
-            logger.debug("\(#function) sending BluetoothPowerOffNotification")
-
-            let content = UNMutableNotificationContent()
-            content.title = "Bluetooth Power Off"
-            content.body = "Please turn on Bluetooth"
-
-            addRequest(identifier: .bluetoothPoweredOff, content: content)
-        }
-    }
+   
 
     static func sendNoTransmitterSelectedNotification() {
         ensureCanSendNotification {

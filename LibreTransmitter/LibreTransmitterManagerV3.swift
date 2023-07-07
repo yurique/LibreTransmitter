@@ -53,8 +53,8 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
     public func libreManagerDidRestoreState(found peripherals: [CBPeripheral], connected to: CBPeripheral?) {
         let devicename = to?.name  ?? "no device"
         let id = to?.identifier.uuidString ?? "null"
-        let msg = "Bluetooth State restored (Loop restarted?). Found \(peripherals.count) peripherals, and connected to \(devicename) with identifier \(id)"
-        NotificationHelper.sendRestoredStateNotification(msg: msg)
+        
+        logger.debug("Bluetooth State restored (Loop restarted?). Found \(peripherals.count) peripherals, and connected to \(devicename) with identifier \(id)")
     }
 
     public var batteryLevel: Double? {

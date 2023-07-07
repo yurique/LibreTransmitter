@@ -216,14 +216,11 @@ extension LibreTransmitterManagerV3 {
             self.transmitterInfoObservable.connectionState = self.proxy?.connectionStateString ?? "n/a"
             self.transmitterInfoObservable.transmitterType = self.proxy?.shortTransmitterName ?? "Unknown"
         }
-        switch state {
-        case .Connected:
+        
+        if case .Connected = state {
             lastConnected = Date()
-        case .powerOff:
-            NotificationHelper.sendBluetoothPowerOffNotification()
-        default:
-            break
         }
+        
         return
     }
 

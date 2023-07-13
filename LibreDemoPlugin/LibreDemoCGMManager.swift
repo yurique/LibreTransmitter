@@ -47,8 +47,8 @@ class LibreDemoCGMManager: LibreTransmitterManagerV3 {
         self.lastConnected =  Date()
 
 
-        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(5*60), repeats: true) { _ in
-            self.reportMockSample()
+        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(5*60), repeats: true) { [weak self]_ in
+            self?.reportMockSample()
         }
 
         // Also trigger a sample immediately, for dev convenience.

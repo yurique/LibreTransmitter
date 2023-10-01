@@ -23,7 +23,6 @@ public class SensorInfo: ObservableObject, Equatable, Hashable {
     
     public func calculateProgress() -> Double {
         let minutesLeft = Double(self.sensorMinutesLeft)
-        let minutesSinceStart = Double(self.sensorMinutesSinceStart)
         let maxWearTime = Double(self.sensorMaxMinutesWearTime)
         
         guard let activatedAt, let expiresAt else {

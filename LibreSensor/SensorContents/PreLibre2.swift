@@ -223,7 +223,6 @@ public extension Libre2 {
         var measurementTrend: [Measurement] = []
         var measurementHistory: [Measurement] = []
         let age = Int(word(data[41], data[40]))
-        let crc = Int(word(data[43], data[42]))
 
         let bytes = [UInt8](data)
         let calculatedCrc = Crc.crc16(Array(bytes.dropLast(2)), seed: 0xffff)

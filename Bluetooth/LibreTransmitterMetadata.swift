@@ -38,8 +38,8 @@ public struct LibreTransmitterMetadata: CustomStringConvertible {
     }
 
     public var description: String {
-        "Transmitter: \(name), Hardware: \(hardware), firmware: \(firmware)" +
-        "battery: \(batteryString), macAddress: \(macAddress), patchInfo: \(patchInfo), uid: \(uid)"
+        "Transmitter: \(name), Hardware: \(String(describing: hardware)), firmware: \(String(describing: firmware))" +
+        "battery: \(batteryString), macAddress: \(String(describing: macAddress)), patchInfo: \(String(describing: patchInfo)), uid: \(String(describing: uid))"
     }
 
     public func sensorType() -> SensorType? {

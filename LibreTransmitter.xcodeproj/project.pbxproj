@@ -73,8 +73,6 @@
 		27850D9F25672F190020D109 /* LibreTransmitterProxyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BCB256725E80020D109 /* LibreTransmitterProxyProtocol.swift */; };
 		27850DA525672F1C0020D109 /* LibreTransmitterProxyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BCD256725E80020D109 /* LibreTransmitterProxyManager.swift */; };
 		27850DA625672F1E0020D109 /* MiaomiaoTransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BCA256725E70020D109 /* MiaomiaoTransmitter.swift */; };
-		27850DAC25672F3E0020D109 /* LimitedQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BA2256724EF0020D109 /* LimitedQueue.swift */; };
-		27850DB225672F3F0020D109 /* LimitedQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BA2256724EF0020D109 /* LimitedQueue.swift */; };
 		27850DB825672F4B0020D109 /* Calibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BA1256724EF0020D109 /* Calibration.swift */; };
 		27850DBE25672F530020D109 /* LibreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BA0256724EF0020D109 /* LibreError.swift */; };
 		27850DC425672F640020D109 /* GlucoseSmoothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BA5256724F00020D109 /* GlucoseSmoothing.swift */; };
@@ -134,6 +132,7 @@
 		C1C318D62A47638E00C6F29F /* MockBluetoothSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C318CF2A4748A100C6F29F /* MockBluetoothSearcher.swift */; };
 		C1C318D72A47638E00C6F29F /* MockSensorPairingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1BDBAFE2A44FFD800A787D1 /* MockSensorPairingService.swift */; };
 		C1C318D92A478E0000C6F29F /* HKUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C318D82A478E0000C6F29F /* HKUnit.swift */; };
+		C1D819B32AC9B60100C9416E /* LimitedQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BA2256724EF0020D109 /* LimitedQueue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -976,7 +975,6 @@
 				27850DA625672F1E0020D109 /* MiaomiaoTransmitter.swift in Sources */,
 				B40BF26823ABD55200A43CEE /* OSLog.swift in Sources */,
 				43A8EC9D210E68CE00A81379 /* LibreTransmitterManagerV3.swift in Sources */,
-				27850DB225672F3F0020D109 /* LimitedQueue.swift in Sources */,
 				274557C82979EA38003B027B /* LoggerExtension.swift in Sources */,
 				C1C318CE2A4746A800C6F29F /* GenericThrottler.swift in Sources */,
 				27850D9825672F130020D109 /* BubbleTransmitter.swift in Sources */,
@@ -1005,6 +1003,7 @@
 				27850D1225672CA60020D109 /* NotificationHelper.swift in Sources */,
 				27850CF325672C0C0020D109 /* UserDefaults+GlucoseSettings.swift in Sources */,
 				27850CE925672C0C0020D109 /* TimeIntervalExtensions.swift in Sources */,
+				C1D819B32AC9B60100C9416E /* LimitedQueue.swift in Sources */,
 				27DD8F28268FA79800649010 /* GlucoseInfo.swift in Sources */,
 				27850DD025672F780020D109 /* PreLibre2.swift in Sources */,
 				27DD8F23268FA0F500649010 /* TransmitterInfo.swift in Sources */,
@@ -1036,7 +1035,6 @@
 				275EC9AB265EDC280043210E /* GlucoseSettingsView.swift in Sources */,
 				274E71D3297ED77300FCFECD /* AuthView.swift in Sources */,
 				27850CEA25672C0C0020D109 /* TimeIntervalExtensions.swift in Sources */,
-				27850DAC25672F3E0020D109 /* LimitedQueue.swift in Sources */,
 				275EC998265AF64E0043210E /* StatusMessage.swift in Sources */,
 				27850D6C25672DFB0020D109 /* SnoozeView.swift in Sources */,
 				274557C92979EA38003B027B /* LoggerExtension.swift in Sources */,

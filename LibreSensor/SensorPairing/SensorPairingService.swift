@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 import CoreNFC
-import LibreTransmitter
 
 public enum PairingError: Error {
     case noTagInfo

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-protocol CustomDataPickerDelegate: class {
+protocol CustomDataPickerDelegate: AnyObject {
     func pickerDidPickValidRange()
 
 }
@@ -106,7 +106,7 @@ struct CustomDataPickerView: View {
       HStack {
         Picker("", selection: $externalState.start,
           content: {
-            ForEach(startTimes.indices) { i in
+            ForEach(startTimes.indices, id: \.self) { i in
               Text("\(startTimes[i])").tag(i)
             }
           }
@@ -122,7 +122,7 @@ struct CustomDataPickerView: View {
 
         Picker("", selection: $externalState.end,
           content: {
-            ForEach(endTimes.indices) { i in
+            ForEach(endTimes.indices, id: \.self) { i in
               Text("\(endTimes[i])").tag(i)
             }
           }

@@ -49,9 +49,9 @@ public struct SensorData: Codable, SensorDataProtocol {
     /// Parameters for the temperature compensation algorithm
     // let temperatureAlgorithmParameterSet: TemperatureAlgorithmParameters?
 
-    private let headerRange = 0..<24   //  24 bytes, i.e.  3 blocks a 8 bytes
-    private let bodyRange = 24..<320  // 296 bytes, i.e. 37 blocks a 8 bytes
-    private let footerRange = 320..<344  //  24 bytes, i.e.  3 blocks a 8 bytes
+    private static let headerRange = 0..<24   //  24 bytes, i.e.  3 blocks a 8 bytes
+    private static let bodyRange = 24..<320  // 296 bytes, i.e. 37 blocks a 8 bytes
+    private static let footerRange = 320..<344  //  24 bytes, i.e.  3 blocks a 8 bytes
 
     /// The uid of the sensor
     let uuid: Data
@@ -67,20 +67,20 @@ public struct SensorData: Codable, SensorDataProtocol {
         return SensorSerialNumber(withUID: uuid, sensorFamily:family )?.serialNumber ?? "-"
     }
     /// Number of bytes of sensor data to be used (read only), i.e. 344 bytes (24 for header, 296 for body and 24 for footer)
-    private let numberOfBytes = 344 // Header and body and footer of Freestyle Libre data (i.e. 40 blocks of 8 bytes)
+    private static let numberOfBytes = 344 // Header and body and footer of Freestyle Libre data (i.e. 40 blocks of 8 bytes)
     /// Array of 344 bytes as read via nfc
     var bytes: [UInt8]
     /// Subarray of 24 header bytes
     var header: [UInt8] {
-        Array(bytes[headerRange])
+        Array(bytes[Self.headerRange])
     }
     /// Subarray of 296 body bytes
     var body: [UInt8] {
-        Array(bytes[bodyRange])
+        Array(bytes[Self.bodyRange])
     }
     /// Subarray of 24 footer bytes
     var footer: [UInt8] {
-        Array(bytes[footerRange])
+        Array(bytes[Self.footerRange])
     }
     /// Date when data was read from sensor
     public let date: Date
@@ -262,7 +262,7 @@ public struct SensorData: Codable, SensorDataProtocol {
         self.init(uuid: Data(), bytes: bytes, date: date)
     }
     public init?(uuid: Data, bytes: [UInt8], date: Date = Date()) {
-        guard bytes.count == numberOfBytes else {
+        guard bytes.count == Self.numberOfBytes else {
             return nil
         }
         self.bytes = bytes

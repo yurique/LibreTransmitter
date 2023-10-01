@@ -103,7 +103,7 @@ struct SnoozeView: View {
     var snoozePicker: some View {
         VStack {
             Picker(selection: $selectedInterval, label: Text("Strength")) {
-                ForEach(0 ..< pickerTimes.count) {
+                ForEach(0 ..< pickerTimes.count, id: \.self) {
                     Text(formatInterval(self.pickerTimes[$0]))
                 }
             }

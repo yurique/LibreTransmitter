@@ -95,7 +95,7 @@ class AlarmSettingsState: ObservableObject {
             print("stored state for alarms was empty")
             let newState = AlarmSettingsState()
             for _ in (0..<GlucoseScheduleList.minimumSchedulesCount) {
-                var schedule = AlarmScheduleState()
+                let schedule = AlarmScheduleState()
                 setDateComponentState(schedule)
                 schedule.enabled = false
                 newState.schedules.append(schedule)
@@ -104,12 +104,12 @@ class AlarmSettingsState: ObservableObject {
             return newState
         }
 
-        var alarmState = AlarmSettingsState()
+        let alarmState = AlarmSettingsState()
 
         print("stored state for alarms contains \(storedState.schedules.count) elements")
 
         for i in (0..<storedState.schedules.count) {
-            var schedule = AlarmScheduleState()
+            let schedule = AlarmScheduleState()
 
             schedule.enabled = storedState.schedules[i].enabled
             schedule.lowmgdl = storedState.schedules[i].lowAlarm ?? -1
@@ -129,9 +129,9 @@ class AlarmSettingsState: ObservableObject {
     }
 
     func trySaveState() -> StatusMessage? {
-        var legacyState = GlucoseScheduleList()
+        let legacyState = GlucoseScheduleList()
         for newStateSchedule in self.schedules {
-            var glucoseSchedule = GlucoseSchedule()
+            let glucoseSchedule = GlucoseSchedule()
             glucoseSchedule.enabled = newStateSchedule.enabled
             // view is using wrapper binding to store these values so should be safe
             glucoseSchedule.lowAlarm = newStateSchedule.lowmgdl

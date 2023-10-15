@@ -130,7 +130,9 @@ class BubbleTransmitter: MiaoMiaoTransmitter {
         bLogger.debug("bubbleRequestData")
         reset()
 
-        peripheral.writeValue(Data([0x00, 0x00, 0x05]), for: writeCharacteristics, type: .withResponse)
+        let data = Data([0x00, 0x00, 0x05])
+        delegate?.libreDeviceLogMessage(payload: "Bubble Transmitter: requesting data transmission every five minutes: \(data.toDebugString())", type: .send)
+        peripheral.writeValue(data, for: writeCharacteristics, type: .withResponse)
     }
     override func updateValueForNotifyCharacteristics(_ value: Data, peripheral: CBPeripheral, writeCharacteristic: CBCharacteristic?) {
         bLogger.debug("bubbleDidUpdateValueForNotifyCharacteristics, firstbyte is: \(value.first.debugDescription)")
@@ -139,6 +141,8 @@ class BubbleTransmitter: MiaoMiaoTransmitter {
         }
         bLogger.debug("bubble responsestate is of type \(bubbleResponseState.description)")
         bLogger.debug("bubble value is: \(value.toDebugString())")
+        delegate?.libreDeviceLogMessage(payload: "Bubble received value: \(value.toDebugString())", type: .receive)
+        
         switch bubbleResponseState {
         case .bubbleInfo:
             // let hardware = value[value.count-2].description + "." + value[value.count-1].description
@@ -148,8 +152,9 @@ class BubbleTransmitter: MiaoMiaoTransmitter {
 
             bLogger.debug("Got bubbledevice: \(self.metadata.debugDescription)")
            if let writeCharacteristic {
-
-               peripheral.writeValue(Data([0x02, 0x00, 0x00, 0x00, 0x00, 0x2B]), for: writeCharacteristic, type: .withResponse)
+               let data = Data([0x02, 0x00, 0x00, 0x00, 0x00, 0x2B])
+               delegate?.libreDeviceLogMessage(payload: "Bubble requesting datapacket: \(data.toDebugString())", type: .send)
+               peripheral.writeValue(data, for: writeCharacteristic, type: .withResponse)
            }
         case .dataPacket:// , .decryptedDataPacket:
            rxBuffer.append(value.suffix(from: 4))
@@ -159,7 +164,7 @@ class BubbleTransmitter: MiaoMiaoTransmitter {
                reset()
            }
         case .noSensor:
-            delegate?.libreTransmitterReceivedMessage(0x0000, txFlags: 0x34, payloadData: rxBuffer)
+            delegate?.libreDeviceReceivedMessage(0x34, payloadData: rxBuffer)
 
             reset()
         case .serialNumber:

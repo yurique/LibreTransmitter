@@ -233,7 +233,9 @@ class MiaoMiaoTransmitter: LibreTransmitterProxyProtocol {
         reset()
         logger.debug("miaomiaoRequestData")
 
-        peripheral.writeValue(Data([0xF0]), for: writeCharacteristics, type: .withResponse)
+        let data = Data([0xF0])
+        delegate?.libreDeviceLogMessage(payload: "Miaomaio requesting data: \(data.toDebugString())", type: .send)
+        peripheral.writeValue(data, for: writeCharacteristics, type: .withResponse)
     }
 
     func updateValueForNotifyCharacteristics(_ value: Data, peripheral: CBPeripheral, writeCharacteristic: CBCharacteristic?) {
@@ -252,31 +254,33 @@ class MiaoMiaoTransmitter: LibreTransmitterProxyProtocol {
             logger.error("miaomiaoDidUpdateValueForNotifyCharacteristics did not undestand what to do (internal error")
             return
         }
+        
+        delegate?.libreDeviceLogMessage(payload: "miaomiao received value: \(value.toDebugString())", type: .receive)
 
         switch miaoMiaoResponseState {
         case .dataPacketReceived: // 0x28: // data received, append to buffer and inform delegate if end reached
 
             if rxBuffer.count >= 363 {
 
-                delegate?.libreTransmitterReceivedMessage(0x0000, txFlags: 0x28, payloadData: rxBuffer)
+                delegate?.libreDeviceReceivedMessage(0x28, payloadData: rxBuffer)
 
                 handleCompleteMessage()
                 reset()
             }
 
         case .newSensor: // 0x32: // A new sensor has been detected -> acknowledge to use sensor and reset buffer
-            delegate?.libreTransmitterReceivedMessage(0x0000, txFlags: 0x32, payloadData: rxBuffer)
+            delegate?.libreDeviceReceivedMessage(0x32, payloadData: rxBuffer)
 
             confirmSensor(peripheral: peripheral, writeCharacteristics: writeCharacteristic)
             reset()
         case .noSensor: // 0x34: // No sensor has been detected -> reset buffer (and wait for new data to arrive)
 
-            delegate?.libreTransmitterReceivedMessage(0x0000, txFlags: 0x34, payloadData: rxBuffer)
+            delegate?.libreDeviceReceivedMessage(0x34, payloadData: rxBuffer)
 
             reset()
         case .frequencyChangedResponse: // 0xD1: // Success of fail for setting time intervall
 
-            delegate?.libreTransmitterReceivedMessage(0x0000, txFlags: 0xD1, payloadData: rxBuffer)
+            delegate?.libreDeviceReceivedMessage(0xD1, payloadData: rxBuffer)
 
             if value.count >= 2 {
                 if value[2] == 0x01 {
@@ -330,6 +334,8 @@ class MiaoMiaoTransmitter: LibreTransmitterProxyProtocol {
             return
         }
         logger.debug("confirming new sensor")
-        peripheral.writeValue(Data([0xD3, 0x01]), for: writeCharacteristics, type: .withResponse)
+        let data = Data([0xD3, 0x01])
+        delegate?.libreDeviceLogMessage(payload: "Miaomiao auto confirming new sensor: \(data)", type: .send)
+        peripheral.writeValue(data, for: writeCharacteristics, type: .withResponse)
     }
 }

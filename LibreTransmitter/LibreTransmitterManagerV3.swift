@@ -16,6 +16,12 @@ import HealthKit
 import os.log
 
 open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
+    
+    
+
+    
+   
+    
 
     public typealias GlucoseArrayWithPrediction = (trends: [LibreGlucose], historical: [LibreGlucose], prediction: [LibreGlucose])
     public lazy var logger = Logger(forType: Self.self)
@@ -48,6 +54,10 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 
     public func acknowledgeAlert(alertIdentifier: Alert.AlertIdentifier, completion: @escaping (Error?) -> Void) {
         completion(nil)
+    }
+    
+    func logDeviceCommunication(_ message: String, type: DeviceLogEntryType = .send) {
+        self.cgmManagerDelegate?.deviceManager(self, logEventForDeviceIdentifier: UserDefaults.standard.currentSensor, type: type, message: message, completion: nil)
     }
 
     public func libreManagerDidRestoreState(found peripherals: [CBPeripheral], connected to: CBPeripheral?) {
@@ -114,6 +124,8 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
             logger.debug("\(#function) no sensorchange detected")
             return
         }
+        
+        logDeviceCommunication("New sensor \(sensorId) discovered, activated at \(activatedAt)", type: .connection)
         
         logger.debug("\(#function) sensorchange detected")
             

@@ -66,6 +66,8 @@ class Libre2DirectTransmitter: LibreTransmitterProxyProtocol {
         rxBuffer.append(value)
 
         logger.debug("libre2 direct Appended value with length  \(String(describing: value.count)), buffer length is: \(String(describing: self.rxBuffer.count))")
+        
+        delegate?.libreDeviceLogMessage(payload: "libre2direct received value: \(value.toDebugString())", type: .receive)
 
         if rxBuffer.count == expectedBufferSize {
             handleCompleteMessage()
@@ -81,6 +83,8 @@ class Libre2DirectTransmitter: LibreTransmitterProxyProtocol {
         }
 
         logger.debug("Writing streaming unlock code to peripheral: \(unlock.hexEncodedString())")
+        
+        delegate?.libreDeviceLogMessage(payload: "Writing streaming unlock code to peripheral: \(unlock.hexEncodedString())", type: .send)
         peripheral.writeValue(unlock, for: writeCharacteristics, type: .withResponse)
 
     }
@@ -129,11 +133,13 @@ class Libre2DirectTransmitter: LibreTransmitterProxyProtocol {
         do {
             let decryptedBLE = Data(try Libre2.decryptBLE(id: [UInt8](sensor.uuid), data: [UInt8](rxBuffer)))
             var sensorUpdate = Libre2.parseBLEData(decryptedBLE)
+ 
 
             guard sensorUpdate.crcVerified else {
                 delegate?.libreSensorDidUpdate(with: .checksumValidationError)
                 return
             }
+            
 
             metadata = LibreTransmitterMetadata(hardware: nil, firmware: nil, battery: 100,
                                                 name: Self.shortTransmitterName,

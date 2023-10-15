@@ -216,11 +216,13 @@ extension LibreTransmitterManagerV3 {
     }
 
     // will be called on utility queue
-    public func libreTransmitterStateChanged(_ state: BluetoothmanagerState) {
+    public func libreDeviceStateChanged(_ state: BluetoothmanagerState) {
         DispatchQueue.main.async {
             self.transmitterInfoObservable.connectionState = self.proxy?.connectionStateString ?? "n/a"
             self.transmitterInfoObservable.transmitterType = self.proxy?.shortTransmitterName ?? "Unknown"
         }
+        logDeviceCommunication("Sensor/Transmitter Device change state to: \(state.rawValue))", type: .connection)
+        
         
         if case .Connected = state {
             lastConnected = Date()
@@ -228,27 +230,30 @@ extension LibreTransmitterManagerV3 {
         
         return
     }
+    
+    public func libreDeviceLogMessage(payload: String, type: LoopKit.DeviceLogEntryType) {
+        logDeviceCommunication(payload, type: type)
+    }
 
     // will be called on utility queue
-    public func libreTransmitterReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
+    public func libreDeviceReceivedMessage(_ txFlags: UInt8, payloadData: Data) {
+        
         guard let packet = MiaoMiaoResponseState(rawValue: txFlags) else {
             // Incomplete package?
             // this would only happen if delegate is called manually with an unknown txFlags value
             // this was the case for readouts that were not yet complete
-            logger.debug("incomplete package or unknown response state")
+            logger.debug("Incomplete package or unknown response state")
             return
         }
 
         switch packet {
         case .newSensor:
-            logger.debug("new libresensor detected")
+            //we can't be sure of the activation datetime for the new sensor here
+            logger.debug("New libresensor detected")
             NotificationHelper.sendSensorChangeNotificationIfNeeded()
         case .noSensor:
-            logger.debug("no libresensor detected")
+            logger.debug("No libresensor detected")
             NotificationHelper.sendSensorNotDetectedNotificationIfNeeded(noSensor: true)
-        case .frequencyChangedResponse:
-            logger.debug("transmitter readout interval has changed!")
-
         default:
             // we don't care about the rest!
             break

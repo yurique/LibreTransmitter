@@ -5,14 +5,13 @@ let package = Package(
   platforms: [.iOS(.v15)],
   products: [
     .library(name: "LibreTransmitter", targets: ["LibreTransmitter"]),
-    .library(name: "LibreTransmitterPlugin", targets: ["LibreTransmitterPlugin"]),
+    .library(name: "RawGlucose", targets: ["RawGlucose"]),
   ],
   targets: [
+    .target(name: "RawGlucose",
+            path: "RawGlucose"),
     .target(name: "LibreTransmitter",
-            path: "LibreTransmitter",
-            resources: [.process("Resources")]),
-    .target(name: "LibreTransmitterPlugin",
-            dependencies: ["LibreTransmitter"],
-            path: "LibreTransmitterPlugin")
+            dependencies: ["RawGlucose"],
+            path: "LibreTransmitter")
   ]
 )

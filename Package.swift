@@ -47,6 +47,8 @@ let package = Package(
             name: "LibreTransmitterUI",
             dependencies: [
                 "LibreTransmitter",
+                .product(name: "LoopKit", package: "LoopKit"),
+                .product(name: "LoopKitUI", package: "LoopKit")
             ],
             path: "LibreTransmitterUI"
             // resources: [.process("Resources")]

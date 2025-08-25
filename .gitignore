@@ -37,3 +37,5 @@ Carthage
 Pods/
 Carthage/
 .gitmodules
+
+/node_modules

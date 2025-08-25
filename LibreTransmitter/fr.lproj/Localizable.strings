@@ -1,6 +1,15 @@
 /* error description for PairingError.decryptionError */
 "Could not decrypt sensor contents" = "Impossible de déchiffrer le contenu du capteur";
 
+/* error description for PairingError.noPatchInfo */
+"Could not get patch info" = "Impossible d'obtenir les données du patch";
+
+/* error description for PairingError.noSensorData */
+"Could not get sensor data" = "Impossible d'obtenir les données du capteur";
+
+/* error description for PairingError.noTagInfo */
+"Could not get tag info" = "Impossible d'obtenir les données du tag";
+
 /* The title of the Dexcom Share service
    Title for the CGMManager option */
 "Dexcom Share" = "Dexcom Share";

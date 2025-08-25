@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/Artificial-Pancreas/LibreTransmitter#readme",
   "publishConfig": {
-  "@artificial-pancreas:registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   }
 }

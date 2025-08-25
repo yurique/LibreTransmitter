@@ -8,9 +8,10 @@ let package = Package(
     .library(name: "RawGlucose", targets: ["RawGlucose"]),
   ],
   targets: [
-    .target(name: "RawGlucose",
-            path: "RawGlucose"),
-    .target(name: "LibreTransmitter",
+      .binaryTarget(
+            name: "RawGlucose",
+            path: "RawGlucose.xcframework"),
+      .target(name: "LibreTransmitter",
             dependencies: ["RawGlucose"],
             path: "LibreTransmitter")
   ]

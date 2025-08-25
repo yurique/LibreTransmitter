@@ -1,0 +1,22 @@
+{
+  "name": "@artificial-pancreas/libretransmitter",
+  "version": "1.0.0",
+  "description": "LibreTransmitter",
+  "main": "index.js",
+  "scripts": {
+    "test": "0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Artificial-Pancreas/LibreTransmitter.git"
+  },
+  "keywords": [
+    "libre"
+  ],
+  "author": "LoopKit authors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Artificial-Pancreas/LibreTransmitter/issues"
+  },
+  "homepage": "https://github.com/Artificial-Pancreas/LibreTransmitter#readme"
+}

@@ -1,28 +1,18 @@
-// swift-tools-version:5.5
-
-import PackageDescription
-
+// swift-tools-version: 5.9
+import PackageKit
 let package = Package(
-    name: "LibreTransmitter",
-    platforms: [.iOS(.v14)],
-    products: [
-        .library(
-            name: "LibreTransmitter",
-            targets: ["LibreTransmitter"]),
-        .library(
-            name: "RawGlucose",
-            targets: ["RawGlucose"]),
-    ],
-    dependencies: [],
-    targets: [
-        .binaryTarget(
-            name: "RawGlucose",
-            path: "RawGlucose.xcframework"),
-        .target(
-            name: "LibreTransmitter",
-            dependencies: ["RawGlucose"],
-            resources: [.process("LibreTransmitterUI/Graphics")]
-        )
-
-    ]
+  name: "LibreTransmitterSPM",
+  platforms: [.iOS(.v15)],
+  products: [
+    .library(name: "LibreTransmitter", targets: ["LibreTransmitter"]),
+    .library(name: "LibreTransmitterPlugin", targets: ["LibreTransmitterPlugin"]),
+  ],
+  targets: [
+    .target(name: "LibreTransmitter",
+            path: "LibreTransmitter",
+            resources: [.process("Resources")]),
+    .target(name: "LibreTransmitterPlugin",
+            dependencies: ["LibreTransmitter"],
+            path: "LibreTransmitterPlugin")
+  ]
 )

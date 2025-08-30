@@ -11,7 +11,7 @@
 "Are you sure you want to delete this CGM?" = "Voulez-vous vraiment supprimer ce CGM?";
 
 /* Text describing question to remove the cgmmanager from loop */
-"Are you sure you want to remove this cgm from loop?" = "Êtes-vous sûr de vouloir retirer ce CGM de Loop ?";
+"Are you sure you want to remove this cgm from loop?" = "Êtes-vous sûr de vouloir retirer ce CGM de Loop?";
 
 /* Text of Authenticate button in AuthView */
 "Authenticate" = "Authentifier";

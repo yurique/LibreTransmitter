@@ -229,6 +229,12 @@
             "value" : "Dexcom Share"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dexcom Share"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -277,7 +283,19 @@
             "value" : "Декском Шеар"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dexcom Share"
+          }
+        },
         "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dexcom Share"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dexcom Share"
@@ -518,6 +536,12 @@
             "value" : "Attention Requise"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "דורש תשומת לב"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -572,6 +596,12 @@
             "value" : "Kräver åtgärd"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İlgilenmeniz gerekiyor"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -590,6 +620,18 @@
       "comment" : "Sensor state description for the valid state",
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "موافق"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -624,6 +666,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תקין"
           }
         },
         "it" : {
@@ -674,10 +722,22 @@
             "value" : "OK"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamam"
           }
         },
         "vi" : {

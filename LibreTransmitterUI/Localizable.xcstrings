@@ -12,6 +12,30 @@
             "value" : "%@"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31,6 +55,30 @@
           }
         },
         "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@"
@@ -211,6 +259,12 @@
       "comment" : "Confirmation message for deleting a CGM",
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هل أنت متأكد أنك تريد حذف هذا CGM؟"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -245,6 +299,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voulez-vous vraiment supprimer ce CGM?"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "בטוח שברצונך למחוק את חיישן זה?"
           }
         },
         "it" : {
@@ -295,10 +355,22 @@
             "value" : "Подтвердите удаление мониторинга?"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naozaj chcete odstrániť toto CGM?"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Säkert att du vill radera denna CGM?"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu CGM'i silmek istediğinizden emin misiniz?"
           }
         },
         "vi" : {
@@ -508,6 +580,18 @@
     "Cancel" : {
       "comment" : "Cancel button",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إلغاء"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -536,6 +620,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annuler"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "לא"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "निरस्त"
           }
         },
         "it" : {
@@ -586,10 +682,22 @@
             "value" : "Отмена"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušiť"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avbryt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İptal"
           }
         },
         "vi" : {
@@ -757,6 +865,12 @@
             "value" : "Identifiant"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרטי כניסה"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -809,6 +923,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inloggningsuppgifter"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kimlik bilgileri"
           }
         },
         "vi" : {
@@ -939,6 +1059,12 @@
             "value" : "Date"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תאריך"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -987,10 +1113,22 @@
             "value" : "Дата"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dátum"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tid"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarih"
           }
         },
         "vi" : {
@@ -1069,10 +1207,22 @@
             "value" : "Tage"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "días"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "jours"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ימים"
           }
         },
         "it" : {
@@ -1097,6 +1247,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "dni"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "zile"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "дней"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dni"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "gün"
           }
         }
       }
@@ -1186,6 +1360,12 @@
     "Delete CGM" : {
       "comment" : "Button title to delete CGM\n   Title text for the button to remove a CGM from Loop",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف CGM"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1214,6 +1394,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Supprimer CGM"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מחק חיישן"
           }
         },
         "it" : {
@@ -1264,10 +1450,22 @@
             "value" : "Удалить мониторинг"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstrániť CGM"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Radera CGM"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CGM Sil"
           }
         },
         "vi" : {
@@ -1527,6 +1725,12 @@
             "state" : "translated",
             "value" : "g"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "г"
+          }
         }
       }
     },
@@ -1534,6 +1738,18 @@
       "comment" : "Title describing glucose value",
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قراءات السكر"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glukóza"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1568,6 +1784,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Glycémie"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "גלוקוז"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शुगर"
           }
         },
         "it" : {
@@ -1618,10 +1846,22 @@
             "value" : "Гликемия"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glykémia"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Glukos"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kan şekeri"
           }
         },
         "vi" : {
@@ -2023,6 +2263,12 @@
             "value" : "Dernière mesure"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "קריאה אחרונה"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2071,10 +2317,22 @@
             "value" : "Последние данные"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posledné čítanie"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Senaste avläsning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son Okuma"
           }
         },
         "vi" : {
@@ -2275,6 +2533,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "mg/dL"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "мг/дл"
           }
         }
       }
@@ -2577,6 +2841,12 @@
             "value" : "À l'extérieur des É.-U."
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מחוץ לארה״ב"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2625,10 +2895,22 @@
             "value" : "за пределами США"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mimo USA"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Utanför USA"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ABD dışında"
           }
         },
         "vi" : {
@@ -2773,6 +3055,12 @@
             "value" : "Mot de passe"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "סיסמה"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2821,10 +3109,22 @@
             "value" : "пароль"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heslo"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parola"
           }
         },
         "vi" : {
@@ -3429,6 +3729,12 @@
             "value" : "Serveur"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שרת"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3477,10 +3783,22 @@
             "value" : "Сервер"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Server"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucu"
           }
         },
         "vi" : {
@@ -3676,6 +3994,18 @@
             "value" : "Trend"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מגמה"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ट्रेंड"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3724,10 +4054,22 @@
             "value" : "тенденция"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trend"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trend"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eğilim"
           }
         },
         "vi" : {
@@ -3834,6 +4176,12 @@
             "value" : "É.-U."
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ארה״ב"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3882,10 +4230,22 @@
             "value" : "США"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "USA"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "USA"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ABD"
           }
         },
         "vi" : {
@@ -3942,6 +4302,12 @@
             "value" : "Nom d'utilisateur"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שם משתמש"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3990,10 +4356,22 @@
             "value" : "Имя пользователя"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meno používateľa"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Användarnamn"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanıcı adı"
           }
         },
         "vi" : {

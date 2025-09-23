@@ -104,7 +104,14 @@
       }
     },
     "%lld%%" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%"
+          }
+        }
+      }
     },
     "Activate and finish warming up a new sensor with another app or physical reader." : {
       "comment" : "Label text for step 1 of AuthView",
@@ -148,7 +155,14 @@
       }
     },
     "Active from - to " : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiv fra - til"
+          }
+        }
+      }
     },
     "Additional notification types" : {
       "comment" : "Text describing heading for additional notification types for third party transmitters",
@@ -221,10 +235,24 @@
       }
     },
     "Adds Transmitter Battery" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legger til senderbatteri"
+          }
+        }
+      }
     },
     "Alarm Settings" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alarm-innstillinger"
+          }
+        }
+      }
     },
     "Always Notify Glucose" : {
       "comment" : "Text describing always notify glucose option in notificationsettingsview",
@@ -251,6 +279,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zawsze powiadamiaj o glukozie"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "始终通知血糖值"
           }
         }
       }
@@ -418,6 +452,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Czy na pewno chcesz usunąć ten CGM z pętli?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您确定要将此 CGM（连续血糖监测仪）从 Loop 中移除吗？"
           }
         }
       }
@@ -1272,6 +1312,12 @@
             "state" : "translated",
             "value" : "gün"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "天"
+          }
         }
       }
     },
@@ -1603,7 +1649,14 @@
 
     },
     "Edit calibrations" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rediger kalibreringer"
+          }
+        }
+      }
     },
     "Fair warning: The sensor will be not be using the manufacturer's algorithm, and some safety mitigations present in the manufacturers algorithm might be missing when you use this." : {
       "comment" : "Label text for step 4 of connection setup",
@@ -2494,7 +2547,14 @@
       }
     },
     "Low battery" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lavt batterinivå"
+          }
+        }
+      }
     },
     "mg/dL" : {
       "comment" : "The short unit display string for milligrams of glucose per decilter",
@@ -2708,7 +2768,14 @@
       }
     },
     "New Device Setup" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppsett av ny enhet"
+          }
+        }
+      }
     },
     "No Connection: " : {
       "comment" : "Text describing no connection label in settingsview",
@@ -2758,7 +2825,14 @@
       }
     },
     "Notification" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsling"
+          }
+        }
+      }
     },
     "Notify per reading" : {
       "comment" : "Text describing option for letting user choose notifying for every reading, every second reading etc",
@@ -3483,7 +3557,14 @@
       }
     },
     "Sensor change" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensorbytte"
+          }
+        }
+      }
     },
     "Sensor expires in " : {
       "comment" : "Text describing sensor expires in label in settingsview",
@@ -3533,7 +3614,14 @@
       }
     },
     "Sensor expires soon" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensoren utløper snart"
+          }
+        }
+      }
     },
     "Sensor is expired" : {
       "localizations" : {
@@ -3582,7 +3670,14 @@
       }
     },
     "Sensor not found" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensoren ble ikke funnet"
+          }
+        }
+      }
     },
     "Sensor Serial" : {
       "comment" : "Text describing Sensor serial label in settingsview",
@@ -4134,7 +4229,14 @@
       }
     },
     "Upload to remote data service" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last opp til ekstern datatjeneste"
+          }
+        }
+      }
     },
     "US" : {
       "comment" : "U.S. share server option title",
@@ -4418,10 +4520,24 @@
       }
     },
     "Value" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verdi"
+          }
+        }
+      }
     },
     "View factory calibrations" : {
-
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis fabrikkalibreringer"
+          }
+        }
+      }
     },
     "Your sensor must be activated and fully warmed up." : {
       "comment" : "Label text for step 1 of libre2 setup",

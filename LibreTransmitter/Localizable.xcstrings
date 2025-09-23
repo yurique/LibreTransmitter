@@ -45,6 +45,12 @@
             "state" : "translated",
             "value" : "Не удалось расшифровать содержимое"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法解密传感器内容"
+          }
         }
       }
     },
@@ -139,6 +145,12 @@
             "state" : "translated",
             "value" : "Не удалось получить данные с сенсора"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法获取传感器数据"
+          }
         }
       }
     },
@@ -185,6 +197,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не удалось получить информацию о теге"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法获取标签信息"
           }
         }
       }
@@ -404,6 +422,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Удерживайте верхнюю часть iPhone рядом с датчиком для создания пары"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将 iPhone 顶部靠近传感器进行配对"
           }
         }
       }
@@ -798,6 +822,12 @@
             "state" : "translated",
             "value" : "NFC телефона не поддерживается!"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不支持手机 NFC！"
+          }
         }
       }
     },
@@ -880,6 +910,12 @@
             "state" : "translated",
             "value" : "Обнаружен неверный тип датчика"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "检测到错误的传感器类型"
+          }
         }
       }
     },
@@ -926,6 +962,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ваш телефон или приложение не поддерживает NFC-связь, которая необходима для подключения к сенсорам Libre2"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的手机或应用未启用 NFC 通信功能，而该功能是与 Libre 2 传感器配对所必需的。"
           }
         }
       }

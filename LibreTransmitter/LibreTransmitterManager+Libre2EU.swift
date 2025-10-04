@@ -28,8 +28,8 @@ extension LibreTransmitterManagerV3 {
         let typeDesc = Device.sensorType().debugDescription
 
         let now = Date()
-        // only once per mins minute
-        let mins =  4.5
+        // only one reading per 1 minute / 5 minutes
+        let mins = Features.allowOneMinuteReadings ? 0.8 : 4.5
         if let earlierplus = lastDirectUpdate?.addingTimeInterval(mins * 60), earlierplus >= now {
             logger.debug("last ble update was less than \(mins) minutes ago, aborting loop update")
             self.logDeviceCommunication("Sensor didUpdate (not used) \(bleData)", type: .receive)
